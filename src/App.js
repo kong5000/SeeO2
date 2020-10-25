@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import CurrentLocation from "./Map";
+import googleMapsApi from '../.env'
 
 const infoDisplay = {
   color: "olive",
@@ -93,5 +94,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyChsknp51YSpb4v9iWekuEeKhsICrDUfGM",
+  apiKey: googleMapsApi,
 })(MapContainer);
