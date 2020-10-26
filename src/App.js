@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import { GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import CurrentLocation from "./Map";
 import SideBar from "./SideBar";
 import "./App.css";
+import Marker from './Marker';
+import poor from "./images/stop.png";
+import moderate from "./images/orange-blank.png";
+import good from "./images/ltblu-blank.png"
 
 export class MapContainer extends Component {
   state = {
@@ -40,6 +44,7 @@ export class MapContainer extends Component {
             position={{ lat: 48.635208, lng: -123.415739 }}
             CO2={3801}
             TVOC={4.559}
+            icon={poor}
           />
           <Marker
             onClick={this.onMarkerClick}
@@ -48,6 +53,7 @@ export class MapContainer extends Component {
             position={{ lat: 48.4491, lng: -123.39771 }}
             CO2={2138}
             TVOC={3.058}
+            icon={moderate}
           />
           <Marker
             onClick={this.onMarkerClick}
@@ -56,6 +62,7 @@ export class MapContainer extends Component {
             position={{ lat: 49.21008, lng: -123.1162653 }}
             CO2={400}
             TVOC={0.85}
+            icon={good}
           />
           <InfoWindow
             marker={this.state.activeMarker}
