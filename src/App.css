@@ -1,7 +1,8 @@
 .main-container {
   display: flex;
-  flex-flow: row nowrap;
   justify-content: space-between;
+  background-color: olive;
+  margin: 0;
 }
 
 .info-display {

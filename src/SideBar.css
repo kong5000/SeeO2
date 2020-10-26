@@ -1,12 +1,17 @@
 .sidebar {
   background-color: beige;
   color: olivedrab;
-  font-weight: 700;
-  width: 20vw;
+  width: 17vw;
   height: 100vh;
   display: flex;
   justify-content: left;
   align-items: center;
   flex-direction: column;
+  flex-wrap: wrap;
   margin: 0;
+  padding: 10px;
 };
+
+.logo {
+  font-weight: 900;
+}

@@ -2,9 +2,10 @@ import React from "react";
 
 const mapStyles = {
   map: {
-    position: "absolute",
+    position: "relative",
     width: "80vw",
     height: "100vh",
+    margin: "0",
   },
 };
 
