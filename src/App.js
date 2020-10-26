@@ -44,7 +44,7 @@ export class MapContainer extends Component {
           <Marker
             onClick={this.onMarkerClick}
             title="Click for more info."
-            name={`${this.props.sensors[0].name}`}
+            name={`JAYDEN WAS HERE`}
             position={{ lat: 48.4491, lng: -123.39771 }}
             CO2={2138}
             TVOC={3.058}
@@ -52,10 +52,10 @@ export class MapContainer extends Component {
           <Marker
             onClick={this.onMarkerClick}
             title="Click for more info."
-            name="Keith's Air Quality sensor"
-            position={{ lat: 49.21008, lng: -123.1162653 }}
-            CO2={400}
-            TVOC={0.85}
+            name={`${this.props.sensors[2].name}'s Air Quality sensor`}
+            position={{ lat: this.props.sensors[2].latitude, lng: this.props.sensors[2].longitude }}
+            CO2={this.props.sensors[2].co2}
+            TVOC={this.props.sensors[2].tvoc}
           />
           <InfoWindow
             marker={this.state.activeMarker}
