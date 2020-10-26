@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDom from "react-dom";
 
 const mapStyles = {
   map: {
@@ -12,6 +11,7 @@ const mapStyles = {
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     const { lat, lng } = this.props.initialCenter;
 
     this.state = {
@@ -28,10 +28,10 @@ export class CurrentLocation extends React.Component {
       const { google } = this.props;
       const maps = google.maps;
 
-      const mapRef = this.refs.map;
+      const mapRef = this.myRef;
 
       // references ot the actual DOM element
-      const node = ReactDom.findDOMNode(mapRef);
+      const node = mapRef.current;
 
       let { zoom } = this.props;
       const { lat, lng } = this.state.currentLocation;
@@ -104,7 +104,7 @@ export class CurrentLocation extends React.Component {
     const style = Object.assign({}, mapStyles.map);
     return (
       <div>
-        <div style={style} ref="map">
+        <div style={style} ref={this.myRef}>
           Loading map...
         </div>
         {this.renderChildren()}
