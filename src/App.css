@@ -1,14 +1,16 @@
 .main-container {
   display: flex;
   justify-content: space-between;
-  background-color: olive;
   margin: 0;
+  background-color: navy;
 }
 
 .info-display {
-  color: olivedrab;
   font-weight: 700;
-  background-color: beige;
+  background-image: url('./images/cloud_background.jpg');
+  background-position: bottom;
+  background-size: 200%;
+  color: navy;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid grey;

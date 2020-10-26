@@ -1,17 +1,17 @@
+.logo {
+  font-weight: 700;
+}
 .sidebar {
-  background-color: beige;
-  color: olivedrab;
+  background-image: url('./images/cloud_background.jpg');
+  background-position: right;
+  color: navy;
   width: 17vw;
   height: 100vh;
   display: flex;
   justify-content: left;
   align-items: center;
   flex-direction: column;
-  flex-wrap: wrap;
   margin: 0;
   padding: 10px;
+  opacity: 1.0;
 };
-
-.logo {
-  font-weight: 900;
-}

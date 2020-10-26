@@ -18,8 +18,9 @@ export class SideBar extends Component {
           when that location's air quality gets worse.
         </p>
         <p>
-          See O2 is user powered. Users can purchase an air quality sensor and
-          hook it into our network, widening and deepening our coverage.
+          <span className="logo">See O2</span> is user powered. Users can
+          purchase an air quality sensor and hook it into our network, widening
+          and deepening our coverage.
         </p>
       </div>
     );
