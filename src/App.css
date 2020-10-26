@@ -1,0 +1,18 @@
+.main-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.info-display {
+  color: olivedrab;
+  font-weight: 700;
+  background-color: beige;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+};
