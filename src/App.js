@@ -33,30 +33,17 @@ export class MapContainer extends Component {
       <div className="main-container">
         <CurrentLocation centerAroundCurrentLocation google={this.props.google}>
           <Marker onClick={this.onMarkerClick} name={"Current Location"} />
-          <Marker
+          
+          {this.props.sensors.map((sensor)=>{
+            return <Marker
             onClick={this.onMarkerClick}
             title="Click for more info."
-            name={"Mark's Air Quality sensor"}
-            position={{ lat: 48.635208, lng: -123.415739 }}
-            CO2={3801}
-            TVOC={4.559}
+            name={`${sensor.name}'s Air Quality sensor`}
+            position={{ lat: sensor.latitude, lng: sensor.longitude }}
+            CO2={sensor.co2}
+            TVOC={sensor.tvoc}
           />
-          <Marker
-            onClick={this.onMarkerClick}
-            title="Click for more info."
-            name={`JAYDEN WAS HERE`}
-            position={{ lat: 48.4491, lng: -123.39771 }}
-            CO2={2138}
-            TVOC={3.058}
-          />
-          <Marker
-            onClick={this.onMarkerClick}
-            title="Click for more info."
-            name={`${this.props.sensors[2].name}'s Air Quality sensor`}
-            position={{ lat: this.props.sensors[2].latitude, lng: this.props.sensors[2].longitude }}
-            CO2={this.props.sensors[2].co2}
-            TVOC={this.props.sensors[2].tvoc}
-          />
+          })}
           <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
