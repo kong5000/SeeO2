@@ -1,6 +1,9 @@
 .logo {
   font-weight: 700;
 }
+img {
+  padding: 30px;
+}
 .sidebar {
   background-image: url('./images/cloud_background.jpg');
   background-position: right;
@@ -8,7 +11,7 @@
   width: 17vw;
   height: 100vh;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: left;
   align-items: center;
   flex-direction: column;
   margin: 0;
