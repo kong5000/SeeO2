@@ -4,7 +4,7 @@
 .sidebar {
   background-image: url('./images/cloud_background.jpg');
   background-position: right;
-  color: navy;
+  color: #163d5f;
   width: 17vw;
   height: 100vh;
   display: flex;
