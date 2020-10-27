@@ -6,12 +6,14 @@ import App from './App';
 import ioClient from 'socket.io-client'
 const socket = ioClient('http://localhost:8002');
 
+//Connect to the backend and render the frontend
 socket.on('connect', ()=>{
   socket.on('SendSensors', (data)=>{
     ReactDOM.render(
       <React.StrictMode>
         <App 
           sensors={data}
+          socket={socket}
         />
       </React.StrictMode>,
       document.getElementById('root')

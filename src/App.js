@@ -12,6 +12,7 @@ export class MapContainer extends Component {
   };
 
   onMarkerClick = (props, marker, e) => {
+    this.props.socket.emit('getHistoricalData', marker.id);
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
@@ -42,6 +43,7 @@ export class MapContainer extends Component {
             position={{ lat: sensor.latitude, lng: sensor.longitude }}
             CO2={sensor.co2}
             TVOC={sensor.tvoc}
+            id={sensor.id}
           />
           })}
           <InfoWindow
