@@ -14,7 +14,12 @@ export class MapContainer extends Component {
     showingInfoWindow: false,
     activeMarker: {},
     selectedPlace: {},
-    email: ''
+    email: '',
+    sensorEmail: '',
+    name: '',
+    url: '',
+    latitude: 0,
+    longitude: 0
   };
 
   onMarkerClick = (props, marker, e) => {
@@ -42,6 +47,47 @@ export class MapContainer extends Component {
           placeholder="Enter email for updates"></input>
           <button type="submit">Submit</button>
         </form>
+          <h1>New Sensor</h1>
+        <form onSubmit={this.newSensor}>
+          <input type="email" name='email' value={this.sensorEmail}
+          onChange={event => {
+            this.setState({
+              sensorEmail: event.target.value
+            });
+          }} placeholder="Email"></input>
+
+          <input name='name' value={this.name}
+          onChange={event => {
+            this.setState({
+              name: event.target.value
+            });
+          }} placeholder="Name"></input>
+
+          <input name='url' value={this.url}
+          onChange={event => {
+            this.setState({
+              url: event.target.value
+            });
+          }} placeholder="Server Url"></input>
+
+          <input type="number" name='latitude' value={this.latitude}
+          onChange={event => {
+            this.setState({
+              latitude: event.target.value
+            });
+          }} placeholder="Latitude"></input>
+
+          <input type="number" name='longitude' value={this.longitude}
+          onChange={event => {
+            this.setState({
+              longitude: event.target.value
+            });
+          }} placeholder="Longitude"></input>
+
+          <button type="submit">Submit</button>
+        </form>
+
+        
       </Fragment>
       , document.getElementById('popup')
     )
@@ -64,6 +110,11 @@ export class MapContainer extends Component {
   newAlert = (event) => {
     event.preventDefault();
     this.props.socket.emit('newAlert', {email: this.state.email, sensors_id: this.state.selectedPlace.id})
+  }
+
+  newSensor = (event) => {
+    event.preventDefault();
+    this.props.socket.emit('newSensor', {email: this.state.email, name:this.state.name, url: this.state.url, latitude: this.state.latitude, longitude: this.state.longitude})
   }
   
   render() {
