@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./SideBar.css";
+import logo from "./images/SeeO2_logo.png";
 
 export class SideBar extends Component {
   render() {
     return (
       <div className="sidebar">
-        <h1>See O2</h1>
-        <h4>Your Local Air Quality Source</h4>
+        <img src={logo} alt="SeeO3 logo" width="250vw" />
         <p>
           <span className="logo">See O2</span> is an app to help you find the
           current air quality more locally, exactly where you live or where you
