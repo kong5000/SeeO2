@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import { GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import CurrentLocation from "./Map";
 import SideBar from "./SideBar";
 import "./App.css";
+import Marker from './Marker';
+import poor from "./images/stop.png";
+import moderate from "./images/orange-blank.png";
+import good from "./images/ltblu-blank.png"
 
 export class MapContainer extends Component {
   state = {
@@ -44,6 +48,7 @@ export class MapContainer extends Component {
             CO2={sensor.co2}
             TVOC={sensor.tvoc}
             id={sensor.id}
+            icon={sensor.co2 > 2000 ? poor : sensor.co2 > 400 ? moderate : good}
           />
           })}
           <InfoWindow

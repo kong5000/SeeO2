@@ -18,6 +18,11 @@ socket.on('connect', ()=>{
       </React.StrictMode>,
       document.getElementById('root')
     );
+  });
+
+  socket.on('receiveHistoricalData', (data)=>{
+    alert(data);
+    console.log(data)
   })
 })
 
