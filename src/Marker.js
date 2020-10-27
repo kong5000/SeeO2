@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Marker.css";
 
 const camelize = function (str) {
   return str
@@ -116,12 +115,12 @@ class Marker extends React.Component {
     return null;
   }
 }
-
+// eslint-disable-next-line
 Marker.propTypes = {
   position: PropTypes.object,
   map: PropTypes.object,
 };
-
+// eslint-disable-next-line
 evtNames.forEach((e) => (Marker.propTypes[e] = PropTypes.func));
 
 Marker.defaultProps = {

@@ -49,7 +49,7 @@ export class MapContainer extends Component {
           <Marker
             onClick={this.onMarkerClick}
             title="Click for more info."
-            name={`${this.props.sensors[0].name}`}
+            // name={`${this.props.sensors[0].name}`}
             position={{ lat: 48.4491, lng: -123.39771 }}
             CO2={2138}
             TVOC={3.058}
