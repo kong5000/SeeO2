@@ -45,3 +45,7 @@
   align-items: center;
   flex-direction: column;
 };
+
+button img:first-child {
+  margin: -23px;
+}
