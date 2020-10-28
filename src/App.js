@@ -179,11 +179,7 @@ export class MapContainer extends Component {
                   placeholder="Enter email for updates"
                 ></input>
                 <br />
-                <button
-                  className="button"
-                  type="button"
-                  onClick={this.newAlert}
-                >
+                <button type="button" onClick={this.newAlert}>
                   Submit
                 </button>
               </div>
