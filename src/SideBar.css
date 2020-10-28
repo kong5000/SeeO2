@@ -8,7 +8,8 @@ img {
   background-image: url('./images/cloud_background.jpg');
   background-position: right;
   color: #163d5f;
-  width: 17vw;
+  min-width: 1px;
+  max-width: 17vw;
   height: 100vh;
   display: flex;
   justify-content: left;

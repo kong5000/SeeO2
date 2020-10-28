@@ -21,7 +21,6 @@ socket.on('connect', ()=>{
   });
 
   socket.on('receiveHistoricalData', (data)=>{
-    console.log(data)
   })
 
   socket.on('alertCreated', (data)=>{
