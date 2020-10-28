@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { InfoWindow } from "google-maps-react";
 
+// borrowed from https://stackoverflow.com/questions/53615413/how-to-add-a-button-in-infowindow-with-google-maps-react
+
 export default class InfoWindowEx extends Component {
   constructor(props) {
     super(props);

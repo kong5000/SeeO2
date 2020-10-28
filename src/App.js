@@ -107,7 +107,6 @@ export class MapContainer extends Component {
         showingInfoWindow: false,
         activeMarker: null,
       });
-      ReactDOM.render(<Fragment></Fragment>, document.getElementById("popup"));
     }
   };
 
@@ -169,7 +168,7 @@ export class MapContainer extends Component {
                 Local Air Quality is
                 {this.state.selectedPlace.CO2 > 3000 ? " poor" : " all right"}
               </p>
-              <div>
+              <div className="email-alert">
                 <input
                   type="email"
                   id={"email"}
@@ -178,7 +177,12 @@ export class MapContainer extends Component {
                   ref={this.emailInput}
                   placeholder="Enter email for updates"
                 ></input>
-                <button type="button" onClick={this.newAlert}>
+                <br />
+                <button
+                  className="button"
+                  type="button"
+                  onClick={this.newAlert}
+                >
                   Submit
                 </button>
               </div>
@@ -186,7 +190,7 @@ export class MapContainer extends Component {
           </InfoWindowX>
         </CurrentLocation>
         <SideBar />
-        <div class="pop-up" id="popup"></div>
+        <div className="addSensor" id="popup"></div>
       </div>
     );
   }

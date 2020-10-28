@@ -5,9 +5,30 @@
   background-color: #163d5f;
 }
 
-.pop-up {
-  min-width: 1vw;
+.email-alert {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  background-color: #163d5f;
+  color: lightblue;
+  border-radius: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+.button:hover {
+  background-color: lightblue;
+  color: #163d5f;
+  font-weight: 700;
+}
+
+.addSensor {
   max-width: 17vw;
+  display: none;
 }
 
 .info-display {
@@ -15,10 +36,10 @@
   background-image: url('./images/cloud_background.jpg');
   background-position: bottom;
   background-size: 200%;
-  color: navy;
+  color: #163d5f;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid navy;
+  border: 1px solid #163d5f;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
