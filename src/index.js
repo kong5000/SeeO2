@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React, { Fragment } from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import reportWebVitals from './reportWebVitals';
@@ -9,27 +9,24 @@ import ioClient from 'socket.io-client'
 const socket = ioClient('http://localhost:8002');
 
 //Connect to the backend and render the frontend
-socket.on('connect', ()=>{
-  socket.on('SendSensors', (data)=>{
+socket.on("connect", () => {
+  socket.on("SendSensors", (data) => {
     ReactDOM.render(
       <React.StrictMode>
-        <App 
-          sensors={data}
-          socket={socket}
-        />
+        <App sensors={data} socket={socket} />
       </React.StrictMode>,
-      document.getElementById('root')
+      document.getElementById("root")
     );
   });
 
-  socket.on('receiveHistoricalData', (data)=>{
+  socket.on("receiveHistoricalData", (data) => {
     //Render historical data where the sidebar is
     const [c02Data, c02Avg] = getChartData(data.data, 'co2', data.offset);
     const [tvocData, tvocAvg] = getChartData(data.data, 'tvoc', data.offset);
 
     ReactDOM.render(
-      <div className="sidebar">
-        <h1>Last 24 hours:</h1>
+      <div className="sidebarChart">
+        <br></br>
         <Chart data={c02Data} dataKey="co2" fill="#8884d8"/>
         <Chart data={tvocData} dataKey="tvoc" fill='#448844'/>
         <AverageChart 
@@ -41,23 +38,24 @@ socket.on('connect', ()=>{
           dataKey="average"/>
         <div className="controlls-container">
           <button onClick={()=> {socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset)});}}>{'<'}</button>
-          <span>HI</span>
+          <span>{(data.offset * 24) + 24} - {data.offset * 24}</span>
           <button onClick={ ()=> {
             if(data.offset > - 0){
               socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset - 2)});
             } }}>
           {'>'}</button>
         </div>
+        <span>Hours Ago</span>
       </div>
       ,
     document.getElementById('side'));
   })
 
-  socket.on('alertCreated', (data)=>{
+  socket.on("alertCreated", (data) => {
     alert(data);
-    return
-  })
-})
+    return;
+  });
+});
 
 //Get data from last 24 hours for bar charts
 const getChartData = (data, dataKey, offset)=>{

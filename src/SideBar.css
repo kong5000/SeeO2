@@ -24,3 +24,18 @@
   justify-content: space-between;
   width: 90%;
 }
+.controlls-container > button {
+  color: #163d5f;
+  width: 70px;
+  font-weight: 700;
+  font-size: 2em;
+  border: 5px solid #163d5f;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.controlls-container > span {
+  font-weight: 700;
+  font-size: 2em;
+  margin-left: 10px;
+  margin-right: 10px;
+}
