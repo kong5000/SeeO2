@@ -24,9 +24,8 @@ socket.on('connect', ()=>{
 
   socket.on('receiveHistoricalData', (data)=>{
     //Render historical data where the sidebar is
-
-    const [c02Data, c02Avg] = getChartData(data, 'co2');
-    const [tvocData, tvocAvg] = getChartData(data, 'tvoc');
+    const [c02Data, c02Avg] = getChartData(data.data, 'co2', data.offset);
+    const [tvocData, tvocAvg] = getChartData(data.data, 'tvoc', data.offset);
 
     ReactDOM.render(
       <div className="sidebar">
@@ -40,6 +39,15 @@ socket.on('connect', ()=>{
               tvoc: tvocAvg}
             ]} 
           dataKey="average"/>
+        <div className="controlls-container">
+          <button onClick={()=> {socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset)});}}>{'<'}</button>
+          <span>HI</span>
+          <button onClick={ ()=> {
+            if(data.offset > - 0){
+              socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset - 2)});
+            } }}>
+          {'>'}</button>
+        </div>
       </div>
       ,
     document.getElementById('side'));
@@ -52,11 +60,11 @@ socket.on('connect', ()=>{
 })
 
 //Get data from last 24 hours for bar charts
-const getChartData = (data, dataKey)=>{
+const getChartData = (data, dataKey, offset)=>{
   const chartData = [];
   let average = 0;
 
-  for(let i = 0; i <= 139; i++){
+  for(let i = 0 + (offset * 140); i <= 139 + (offset * 140); i++){
     const dataPoint = {};
     if(data[i]) {
       dataPoint.name = data[i].date;

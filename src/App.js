@@ -24,7 +24,7 @@ export class MapContainer extends Component {
   };
 
   onMarkerClick = (props, marker, e) => {
-    this.props.socket.emit("getHistoricalData", marker.id);
+    this.props.socket.emit("getHistoricalData", {id:marker.id, offset: -1});
     this.setState({
       selectedPlace: props,
       activeMarker: marker,

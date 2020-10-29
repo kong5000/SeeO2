@@ -19,3 +19,8 @@
   padding: 10px;
   opacity: 1.0;
 };
+.controlls-container {
+  display: flexbox;
+  justify-content: space-between;
+  width: 90%;
+}
