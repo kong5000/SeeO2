@@ -10,18 +10,19 @@ export default class Example extends PureComponent {
     return (
       <BarChart
         width={320}
-        height={300}
+        height={100}
         data={this.props.data}
+        layout="vertical"
         margin={{
           top: 5, right: 0, left: 0, bottom: 5,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tick={false} reversed={true}></XAxis>
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey={this.props.dataKey} fill={this.props.fill} />
+        <XAxis type="number"/>
+        <YAxis dataKey="name" type="category"/>
+        <Tooltip /> 
+        <Bar dataKey='c02' fill="#8884d8" />
+        <Bar dataKey='tvoc' fill="#448844" />
       </BarChart>
     );
   }
