@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Chart from "./Chart";
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import ioClient from 'socket.io-client'
@@ -22,12 +23,30 @@ socket.on('connect', ()=>{
 
   socket.on('receiveHistoricalData', (data)=>{
     //Render historical data where the sidebar is
+
+    const c02Data = [];
+    const tvocData = [];
+    //Get data from the last 24 hours
+    for(let i = 0; i < 139; i++){
+      const dataPoint = {};
+      dataPoint.name = data[i].date;
+      data[i].co2 > 0 ? dataPoint.co2 = data[i].co2 : dataPoint.empty = 100;
+      c02Data.push(dataPoint)
+    }
+    for(let i = 0; i < 139; i++){
+      const dataPoint = {};
+      dataPoint.name = data[i].date;
+      data[i].tvoc > 0 ? dataPoint.tvoc = data[i].tvoc : dataPoint.empty = 100;
+      tvocData.push(dataPoint)
+    }
+
     ReactDOM.render(
-    <p className='sidebar'>
-      {`${data.map((element)=>{
-          return 'pm25: ' + element.pm25 + '\n'
-      })}`}
-    </p>,
+      <div className="sidebar">
+        <h1>Last 24 hours:</h1>
+        <Chart data={c02Data} dataKey="co2"/>
+        <Chart data={tvocData} dataKey="tvoc"/>
+      </div>
+      ,
     document.getElementById('side'));
   })
 
