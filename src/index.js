@@ -29,15 +29,26 @@ socket.on('connect', ()=>{
     //Get data from the last 24 hours
     for(let i = 0; i < 139; i++){
       const dataPoint = {};
-      dataPoint.name = data[i].date;
-      data[i].co2 > 0 ? dataPoint.co2 = data[i].co2 : dataPoint.empty = 100;
-      c02Data.push(dataPoint)
+      if(data[i]) {
+        dataPoint.name = data[i].date;
+        data[i].co2 > 0 ? dataPoint.co2 = data[i].co2 : dataPoint.empty = 100;
+        c02Data.push(dataPoint);
+      } else {
+        //Push empty data if none exists
+        dataPoint.empty = 100;
+        c02Data.push(dataPoint);
+      }
     }
     for(let i = 0; i < 139; i++){
       const dataPoint = {};
-      dataPoint.name = data[i].date;
-      data[i].tvoc > 0 ? dataPoint.tvoc = data[i].tvoc : dataPoint.empty = 100;
-      tvocData.push(dataPoint)
+      if(data[i]) {
+        dataPoint.name = data[i].date;
+        data[i].tvoc > 0 ? dataPoint.tvoc = data[i].tvoc : dataPoint.empty = 100;
+        tvocData.push(dataPoint)
+      } else {
+        dataPoint.empty = 100;
+        tvocData.push(dataPoint);
+      }
     }
 
     ReactDOM.render(
