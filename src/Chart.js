@@ -9,15 +9,15 @@ export default class Example extends PureComponent {
   render() {
     return (
       <BarChart
-        width={350}
+        width={320}
         height={300}
         data={this.props.data}
         margin={{
-          top: 5, right: 30, left: 20, bottom: 5,
+          top: 5, right: 0, left: 0, bottom: 5,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tick={false}></XAxis>
+        <XAxis dataKey="name" tick={false} reversed={true}></XAxis>
         <YAxis />
         <Tooltip />
         <Legend />
