@@ -107,6 +107,9 @@ export class MapContainer extends Component {
         showingInfoWindow: false,
         activeMarker: null,
       });
+      ReactDOM.render(
+        <SideBar />,
+        document.getElementById('side'));
     }
   };
 
@@ -179,14 +182,20 @@ export class MapContainer extends Component {
                   placeholder="Enter email for updates"
                 ></input>
                 <br />
-                <button type="button" onClick={this.newAlert}>
+                <button
+                  className="button"
+                  type="button"
+                  onClick={this.newAlert}
+                >
                   Submit
                 </button>
               </div>
             </div>
           </InfoWindowX>
         </CurrentLocation>
-        <SideBar />
+        <div id="side">
+          <SideBar />
+        </div>
         {/* <div className="addSensor" id="popup"></div> */}
       </div>
     );

@@ -21,6 +21,14 @@ socket.on('connect', ()=>{
   });
 
   socket.on('receiveHistoricalData', (data)=>{
+    //Render historical data where the sidebar is
+    ReactDOM.render(
+    <p className='sidebar'>
+      {`${data.map((element)=>{
+          return 'pm25: ' + element.pm25 + '\n'
+      })}`}
+    </p>,
+    document.getElementById('side'));
   })
 
   socket.on('alertCreated', (data)=>{
