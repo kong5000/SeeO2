@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.sidebarChart {
+  background-color: whitesmoke;
+  background-position: right;
+  color: #163d5f;
+  min-width: 1px;
+  max-width: 20vw;
+  height: 100vh;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+  padding: 10px;
+  opacity: 1.0;
+};
