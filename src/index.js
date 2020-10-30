@@ -4,11 +4,11 @@ import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import AllAveragesChart from "./AllAveragesChart";
-import reportWebVitals from './reportWebVitals';
-import App from './App';
-import ioClient from 'socket.io-client'
-import loading from './images/load.gif'
-const socket = ioClient('http://localhost:8002');
+import reportWebVitals from "./reportWebVitals";
+import App from "./App";
+import ioClient from "socket.io-client";
+import loading from "./images/load.gif";
+const socket = ioClient("http://localhost:8002");
 
 //Connect to the backend and render the frontend
 socket.on("connect", () => {
@@ -23,11 +23,11 @@ socket.on("connect", () => {
 
   socket.on("receiveHistoricalData", (data) => {
     //Render historical data where the sidebar is
-    const [c02Data, c02Avg] = getChartData(data.data, 'co2', data.offset);
-    const [tvocData, tvocAvg] = getChartData(data.data, 'tvoc', data.offset);
-    const [pm25Data, pm25Avg] = getChartData(data.data, 'pm25', data.offset);
-    const [pm10Data, pm10Avg] = getChartData(data.data, 'pm10', data.offset);
-    // const allAverages = getDailyAverages(data.data)  
+    const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
+    const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
+    const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
+    const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
+    // const allAverages = getDailyAverages(data.data)
 
     ReactDOM.render(
       <div className="sidebarChart">
@@ -72,23 +72,26 @@ socket.on("connect", () => {
           >
             {">"}
           </button>
-        </div>  
-        <div className="controlls-container">
-          Housr Ago
         </div>
-        <Chart data={c02Data} dataKey="co2" fill="#8884d8"/>
-        <Chart data={tvocData} dataKey="tvoc" fill='#448844'/>
-        <Chart data={pm25Data} dataKey="pm25" fill='#884444'/>
-        <Chart data={pm10Data} dataKey="pm10" fill='#888888'/>
-        <AverageChart 
+        <div className="controlls-container">
+          <h3 className="hoursAgo">Hours Ago</h3>
+        </div>
+        <Chart data={c02Data} dataKey="co2" fill="#8884d8" />
+        <Chart data={tvocData} dataKey="tvoc" fill="#448844" />
+        <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
+        <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
+        <AverageChart
           data={[
-            { name: 'Avg',
+            {
+              name: "Avg",
               c02: c02Avg,
               tvoc: tvocAvg,
               pm25: pm25Avg,
-              pm10: pm10Avg}
-            ]} 
-          dataKey="average"/>
+              pm10: pm10Avg,
+            },
+          ]}
+          dataKey="average"
+        />
 
         {/* <AllAveragesChart data={allAverages} dataKey="co2"/> */}
       </div>,
@@ -112,7 +115,7 @@ const getChartData = (data, dataKey, offset) => {
     if (data[i]) {
       dataPoint.name = data[i].date;
 
-      if(data[i][dataKey] > 0){
+      if (data[i][dataKey] > 0) {
         dataPoint[dataKey] = data[i][dataKey];
         average += data[i][dataKey];
       } else {
@@ -134,22 +137,30 @@ const getChartData = (data, dataKey, offset) => {
 const getDailyAverages = (data) => {
   const dailyAverage = [];
   const days = {};
-  const averages = {}
+  const averages = {};
 
-  data.forEach(element => {
-    const date = element.date.split(', ');
-    
-    days[date[0] +  date[1]] ? days[date[0] + date[1]] += element.co2 : days[date[0] + date[1]] = element.co2
-    averages[date[0] +  date[1]] ? averages[date[0] + date[1]] += 1 : averages[date[0] + date[1]] = 1
+  data.forEach((element) => {
+    const date = element.date.split(", ");
+
+    days[date[0] + date[1]]
+      ? (days[date[0] + date[1]] += element.co2)
+      : (days[date[0] + date[1]] = element.co2);
+    averages[date[0] + date[1]]
+      ? (averages[date[0] + date[1]] += 1)
+      : (averages[date[0] + date[1]] = 1);
   });
-  let i = 1
-  for(const day in days){
-    dailyAverage.push({name: day, average: days[day] / averages[day], fill: `#${(i*13) + 10}${(i*5) + 10}${(i*5) + 10}`});
+  let i = 1;
+  for (const day in days) {
+    dailyAverage.push({
+      name: day,
+      average: days[day] / averages[day],
+      fill: `#${i * 13 + 10}${i * 5 + 10}${i * 5 + 10}`,
+    });
     i++;
   }
 
-  return(dailyAverage)
-}
+  return dailyAverage;
+};
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
