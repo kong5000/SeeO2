@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
+import AllAveragesChart from "./AllAveragesChart";
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import ioClient from 'socket.io-client'
@@ -24,6 +25,7 @@ socket.on("connect", () => {
     //Render historical data where the sidebar is
     const [c02Data, c02Avg] = getChartData(data.data, 'co2', data.offset);
     const [tvocData, tvocAvg] = getChartData(data.data, 'tvoc', data.offset);
+    const allAverages = getDailyAverages(data.data)
 
     ReactDOM.render(
       <div className="sidebarChart">
@@ -37,6 +39,9 @@ socket.on("connect", () => {
               tvoc: tvocAvg}
             ]} 
           dataKey="average"/>
+
+        {/* <AllAveragesChart data={allAverages} dataKey="co2"/> */}
+        
         {/*Arrow buttons to switch pages in the data view*/}
         <div className="controlls-container">
           <button onClick={()=> {
@@ -85,7 +90,6 @@ const getChartData = (data, dataKey, offset)=>{
     if(data[i]) {
       dataPoint.name = data[i].date;
 
-      // data[i][dataKey] > 0 ? dataPoint[dataKey] = data[i][dataKey] : dataPoint.empty = 100;
       if(data[i][dataKey] > 0){
         dataPoint[dataKey] = data[i][dataKey];
         average += data[i][dataKey];
@@ -103,6 +107,26 @@ const getChartData = (data, dataKey, offset)=>{
   average /= 140
 
   return [chartData, average];
+}
+
+const getDailyAverages = (data) => {
+  const dailyAverage = [];
+  const days = {};
+  const averages = {}
+
+  data.forEach(element => {
+    const date = element.date.split(', ');
+    
+    days[date[0] +  date[1]] ? days[date[0] + date[1]] += element.co2 : days[date[0] + date[1]] = element.co2
+    averages[date[0] +  date[1]] ? averages[date[0] + date[1]] += 1 : averages[date[0] + date[1]] = 1
+  });
+  let i = 1
+  for(const day in days){
+    dailyAverage.push({name: day, average: days[day] / averages[day], fill: `#${(i*13) + 10}${(i*5) + 10}${(i*5) + 10}`});
+    i++;
+  }
+
+  return(dailyAverage)
 }
 
 // If you want to start measuring performance in your app, pass a function
