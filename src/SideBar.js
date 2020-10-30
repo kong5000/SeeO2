@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import "./SideBar.css";
+import SensorForm from "./SensorForm";
 import logo from "./images/SeeO2_logo.png";
 
 export class SideBar extends Component {
@@ -22,6 +24,12 @@ export class SideBar extends Component {
           purchase an air quality sensor and hook it into our network, widening
           and deepening our coverage.
         </p>
+        <button onClick={()=>{
+          ReactDOM.render(
+            <SensorForm socket={this.props.socket}/>
+            ,
+            document.getElementById('side'));
+        }}>Register Sensor</button>
       </div>
     );
   }

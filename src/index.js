@@ -112,7 +112,7 @@ const getChartData = (data, dataKey, offset) => {
     if (data[i]) {
       dataPoint.name = data[i].date;
 
-      if(data[i][dataKey] > 0){
+      if(data[i][dataKey] !== -99){
         dataPoint[dataKey] = data[i][dataKey];
         average += data[i][dataKey];
       } else {
