@@ -3,8 +3,8 @@ import React from "react";
 const mapStyles = {
   map: {
     position: "relative",
-    width: "80vw",
-    height: "100vh",
+    width: "75vw",
+    height: "110vh",
     margin: "0",
   },
 };

@@ -44,35 +44,51 @@ socket.on("connect", () => {
         
         {/*Arrow buttons to switch pages in the data view*/}
         <div className="controlls-container">
-          <button onClick={()=> {
-            socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset)});
-            ReactDOM.render(
-              <div className='sidebarChart' id='loading'>
-                <img src={loading}/>
-              </div>
-              ,
-              document.getElementById('side'));
-            }}>{'<'}</button>
-
-          <span>{(data.offset * 24) + 24} - {data.offset * 24}</span>
-
-          <button onClick={ ()=> {
-            if(data.offset > - 0){
-              socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset - 2)});
+          <button
+            onClick={() => {
+              socket.emit("getHistoricalData", {
+                id: data.data[0].sensors_id,
+                offset: data.offset,
+              });
               ReactDOM.render(
-                <div className='sidebarChart' id='loading'>
-                  <img src={loading}/>
-                </div>
-                ,
-                document.getElementById('side'));
-            } }}>
-          {'>'}</button>
+                <div className="sidebarChart" id="loading">
+                  <img src={loading} alt="loading" />
+                </div>,
+                document.getElementById("side")
+              );
+            }}
+          >
+            {"<"}
+          </button>
+
+          <span>
+            {data.offset * 24 + 24} - {data.offset * 24}
+          </span>
+
+          <button
+            onClick={() => {
+              if (data.offset > -0) {
+                socket.emit("getHistoricalData", {
+                  id: data.data[0].sensors_id,
+                  offset: data.offset - 2,
+                });
+                ReactDOM.render(
+                  <div className="sidebarChart" id="loading">
+                    <img src={loading} alt="loading" />
+                  </div>,
+                  document.getElementById("side")
+                );
+              }
+            }}
+          >
+            {">"}
+          </button>
         </div>
-        <span>Hours Ago</span>
-      </div>
-      ,
-    document.getElementById('side'));
-  })
+        {/*Arrow buttons to switch pages in the data view*/}
+      </div>,
+      document.getElementById("side")
+    );
+  });
 
   socket.on("alertCreated", (data) => {
     alert(data);
@@ -81,13 +97,13 @@ socket.on("connect", () => {
 });
 
 //Get data from last 24 hours for bar charts
-const getChartData = (data, dataKey, offset)=>{
+const getChartData = (data, dataKey, offset) => {
   const chartData = [];
   let average = 0;
 
-  for(let i = 0 + (offset * 140); i <= 139 + (offset * 140); i++){
+  for (let i = 0 + offset * 140; i <= 139 + offset * 140; i++) {
     const dataPoint = {};
-    if(data[i]) {
+    if (data[i]) {
       dataPoint.name = data[i].date;
 
       if(data[i][dataKey] > 0){
@@ -104,10 +120,10 @@ const getChartData = (data, dataKey, offset)=>{
       chartData.push(dataPoint);
     }
   }
-  average /= 140
+  average /= 140;
 
   return [chartData, average];
-}
+};
 
 const getDailyAverages = (data) => {
   const dailyAverage = [];

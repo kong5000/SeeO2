@@ -12,18 +12,33 @@ code {
     monospace;
 }
 
+#side {
+  max-width: 25vw;
+  max-height: 100vh;
+}
+.controlls-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hoursAgo {
+  align-self: center;
+  margin-top: -10px;
+}
+
 .sidebarChart {
   background-color: whitesmoke;
   background-position: right;
+  border-left: 5px solid #163d5f;
   color: #163d5f;
   min-width: 1px;
-  max-width: 20vw;
-  height: 100vh;
+  width: 25vw;
+  height: 110%;
   display: flex;
   justify-content: left;
-  align-items: center;
+  align-items: left;
   flex-direction: column;
   margin: 0;
   padding: 10px;
-  opacity: 1.0;
 };

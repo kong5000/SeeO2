@@ -34,7 +34,7 @@ export class MapContainer extends Component {
     //Render the loading image
     ReactDOM.render(
       <div className='sidebarChart' id='loading'>
-        <img src={loading}/>
+        <img src={loading} alt="loading"/>
       </div>
       ,
       document.getElementById('side'));
