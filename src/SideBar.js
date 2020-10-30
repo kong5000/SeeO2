@@ -29,7 +29,7 @@ export class SideBar extends Component {
             <SensorForm socket={this.props.socket}/>
             ,
             document.getElementById('side'));
-        }}>Register Sensor</button>
+        }}>Register Your Sensor</button>
       </div>
     );
   }
