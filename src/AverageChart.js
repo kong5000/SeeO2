@@ -13,9 +13,9 @@ export default class Example extends PureComponent {
         height={100}
         data={this.props.data}
         layout="vertical"
-        margin={{
-          top: 5, right: 0, left: -25, bottom: 5,
-        }}
+        // margin={{
+        //   top: 5, right: 0, left: -25, bottom: 5,
+        // }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number"/>
