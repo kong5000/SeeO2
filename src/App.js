@@ -84,6 +84,8 @@ export class MapContainer extends Component {
                 position={{ lat: sensor.latitude, lng: sensor.longitude }}
                 CO2={sensor.co2}
                 TVOC={sensor.tvoc}
+                PM25={sensor.pm25}
+                PM10={sensor.pm10}
                 id={sensor.id}
                 icon={
                   sensor.co2 > 2000 ? poor : sensor.co2 > 400 ? moderate : good
@@ -99,11 +101,13 @@ export class MapContainer extends Component {
           >
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
-              <p>CO2: {this.state.selectedPlace.CO2} ppm</p>
-              <p>TVOC: {this.state.selectedPlace.TVOC} mg/m3</p>
+              <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
+              <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span>
+              <span>PM25: {this.state.selectedPlace.PM25 !== -99 ? this.state.selectedPlace.PM25 : 'null'}</span>
+              <span>PM10: {this.state.selectedPlace.PM10 !== -99 ? this.state.selectedPlace.PM10 : 'null'}</span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.CO2 > 3000 ? " poor" : " all right"}
+                {this.state.selectedPlace.pm25 > 35 ? " poor" : " all right"}
               </p>
               <div className="email-alert">
                 <input
