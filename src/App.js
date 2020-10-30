@@ -56,11 +56,15 @@ export class MapContainer extends Component {
   newAlert = (event) => {
     console.log(this.emailInput.current.value);
     event.preventDefault();
-    this.props.socket.emit("newAlert", {
-      email: this.emailInput.current.value,
-      sensors_id: this.state.selectedPlace.id,
-    });
-    this.emailInput.current.value = "";
+    if(this.emailInput.current.value.includes('@')){
+      this.props.socket.emit("newAlert", {
+        email: this.emailInput.current.value,
+        sensors_id: this.state.selectedPlace.id,
+      });
+      this.emailInput.current.value = "";
+    } else {
+      alert('Email is missing @')
+    }
   };
 
   emailInput = React.createRef();
