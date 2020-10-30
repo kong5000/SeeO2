@@ -116,7 +116,7 @@ const getChartData = (data, dataKey, offset) => {
     if (data[i]) {
       dataPoint.name = data[i].date;
 
-      if (data[i][dataKey] > 0) {
+      if (data[i][dataKey] !== -99) {
         dataPoint[dataKey] = data[i][dataKey];
         data[i][dataKey] > maximum ? maximum = data[i][dataKey] : maximum = maximum;
         average += data[i][dataKey];
