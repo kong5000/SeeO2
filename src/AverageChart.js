@@ -23,6 +23,8 @@ export default class Example extends PureComponent {
         <Tooltip /> 
         <Bar dataKey='c02' fill="#8884d8" />
         <Bar dataKey='tvoc' fill="#448844" />
+        <Bar dataKey='pm25' fill="#884444" />
+        <Bar dataKey='pm25' fill="#888888" />
       </BarChart>
     );
   }

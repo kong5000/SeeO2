@@ -10,7 +10,7 @@ export default class Example extends PureComponent {
     return (
       <BarChart
         width={320}
-        height={300}
+        height={150}
         data={this.props.data}
         margin={{
           top: 5, right: 0, left: 0, bottom: 5,

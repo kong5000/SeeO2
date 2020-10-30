@@ -38,74 +38,6 @@ export class MapContainer extends Component {
       </div>
       ,
       document.getElementById('side'));
-    //Render the left panel to sign up for email alerts
-    // ReactDOM.render(
-    //   <Fragment>
-    //     <h1>New Sensor</h1>
-    //     <form onSubmit={this.newSensor}>
-    //       <input
-    //         type="email"
-    //         name="email"
-    //         value={this.sensorEmail}
-    //         onChange={(event) => {
-    //           this.setState({
-    //             sensorEmail: event.target.value,
-    //           });
-    //         }}
-    //         placeholder="Email"
-    //       ></input>
-
-    //       <input
-    //         name="name"
-    //         value={this.name}
-    //         onChange={(event) => {
-    //           this.setState({
-    //             name: event.target.value,
-    //           });
-    //         }}
-    //         placeholder="Name"
-    //       ></input>
-
-    //       <input
-    //         name="url"
-    //         value={this.url}
-    //         onChange={(event) => {
-    //           this.setState({
-    //             url: event.target.value,
-    //           });
-    //         }}
-    //         placeholder="Server Url"
-    //       ></input>
-
-    //       <input
-    //         type="number"
-    //         name="latitude"
-    //         value={this.latitude}
-    //         onChange={(event) => {
-    //           this.setState({
-    //             latitude: event.target.value,
-    //           });
-    //         }}
-    //         placeholder="Latitude"
-    //       ></input>
-
-    //       <input
-    //         type="number"
-    //         name="longitude"
-    //         value={this.longitude}
-    //         onChange={(event) => {
-    //           this.setState({
-    //             longitude: event.target.value,
-    //           });
-    //         }}
-    //         placeholder="Longitude"
-    //       ></input>
-
-    //       <button type="submit">Submit</button>
-    //     </form>
-    //   </Fragment>,
-    //   document.getElementById("popup")
-    // );
   };
 
   onClose = (props) => {
@@ -203,7 +135,6 @@ export class MapContainer extends Component {
         <div id="side">
           <SideBar />
         </div>
-        {/* <div className="addSensor" id="popup"></div> */}
       </div>
     );
   }

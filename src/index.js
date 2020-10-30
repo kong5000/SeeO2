@@ -25,18 +25,24 @@ socket.on("connect", () => {
     //Render historical data where the sidebar is
     const [c02Data, c02Avg] = getChartData(data.data, 'co2', data.offset);
     const [tvocData, tvocAvg] = getChartData(data.data, 'tvoc', data.offset);
-    const allAverages = getDailyAverages(data.data)
+    const [pm25Data, pm25Avg] = getChartData(data.data, 'pm25', data.offset);
+    const [pm10Data, pm10Avg] = getChartData(data.data, 'pm10', data.offset);
+    // const allAverages = getDailyAverages(data.data)
 
     ReactDOM.render(
       <div className="sidebarChart">
         <br></br>
         <Chart data={c02Data} dataKey="co2" fill="#8884d8"/>
         <Chart data={tvocData} dataKey="tvoc" fill='#448844'/>
+        <Chart data={pm25Data} dataKey="pm25" fill='#884444'/>
+        <Chart data={pm10Data} dataKey="pm10" fill='#888888'/>
         <AverageChart 
           data={[
             { name: 'Avg',
               c02: c02Avg,
-              tvoc: tvocAvg}
+              tvoc: tvocAvg,
+              pm25: pm25Avg,
+              pm10: pm10Avg}
             ]} 
           dataKey="average"/>
 
