@@ -46,3 +46,19 @@
   justify-content: center;
   align-items: center;
 }
+#sensorForm  {
+  width: 22.8vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#sensorForm > input, #sensorForm > button, .sidebar > button {
+  border: 5px solid #163d5f;
+  color: #163d5f;
+  background-color: transparent;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}

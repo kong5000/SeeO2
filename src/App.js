@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import CurrentLocation from "./Map";
 import SideBar from "./SideBar";
+import SensorForm from "./SensorForm";
 import "./App.css";
 import Marker from "./Marker";
 import InfoWindowX from "./infoWindowX";
@@ -64,17 +65,6 @@ export class MapContainer extends Component {
 
   emailInput = React.createRef();
 
-  newSensor = (event) => {
-    event.preventDefault();
-    this.props.socket.emit("newSensor", {
-      email: this.state.email,
-      name: this.state.name,
-      url: this.state.url,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-    });
-  };
-
   render() {
     return (
       <div className="main-container">
@@ -133,7 +123,7 @@ export class MapContainer extends Component {
           </InfoWindowX>
         </CurrentLocation>
         <div id="side">
-          <SideBar />
+          <SideBar socket={this.props.socket}/>
         </div>
       </div>
     );
