@@ -106,6 +106,7 @@ socket.on("connect", () => {
 const getChartData = (data, dataKey, offset) => {
   const chartData = [];
   let average = 0;
+  let maximum = 0;
 
   for (let i = 0 + offset * 140; i <= 139 + offset * 140; i++) {
     const dataPoint = {};
@@ -114,6 +115,7 @@ const getChartData = (data, dataKey, offset) => {
 
       if(data[i][dataKey] !== -99){
         dataPoint[dataKey] = data[i][dataKey];
+        data[i][dataKey] > maximum ? maximum = data[i][dataKey] : maximum = maximum;
         average += data[i][dataKey];
       } else {
         dataPoint.empty = 100;
@@ -128,6 +130,12 @@ const getChartData = (data, dataKey, offset) => {
   }
   average /= 140;
 
+  chartData.forEach((element)=>{
+    if(element.empty){
+      element.null = maximum - element[dataKey];
+    }
+  })
+  console.log(chartData)
   return [chartData, average];
 };
 

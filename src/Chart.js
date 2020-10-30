@@ -18,10 +18,11 @@ export default class Example extends PureComponent {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" tick={false} reversed={true}></XAxis>
-        <YAxis />
+        <YAxis/>
         <Tooltip />
         <Legend />
-        <Bar dataKey={this.props.dataKey} fill={this.props.fill} />
+        <Bar dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
+        <Bar barCategoryGap={0} dataKey='null' stackId='x' fill="#000000" />
       </BarChart>
     );
   }
