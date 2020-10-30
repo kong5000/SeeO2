@@ -9,6 +9,7 @@ import InfoWindowX from "./infoWindowX";
 import poor from "./images/stop.png";
 import moderate from "./images/orange-blank.png";
 import good from "./images/ltblu-blank.png";
+import loading from './images/load.gif';
 
 export class MapContainer extends Component {
   state = {
@@ -30,7 +31,13 @@ export class MapContainer extends Component {
       activeMarker: marker,
       showingInfoWindow: true,
     });
-
+    //Render the loading image
+    ReactDOM.render(
+      <div className='sidebarChart' id='loading'>
+        <img src={loading}/>
+      </div>
+      ,
+      document.getElementById('side'));
     //Render the left panel to sign up for email alerts
     // ReactDOM.render(
     //   <Fragment>

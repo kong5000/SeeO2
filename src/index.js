@@ -6,6 +6,7 @@ import AverageChart from "./AverageChart";
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import ioClient from 'socket.io-client'
+import loading from './images/load.gif'
 const socket = ioClient('http://localhost:8002');
 
 //Connect to the backend and render the frontend
@@ -36,12 +37,29 @@ socket.on("connect", () => {
               tvoc: tvocAvg}
             ]} 
           dataKey="average"/>
+        {/*Arrow buttons to switch pages in the data view*/}
         <div className="controlls-container">
-          <button onClick={()=> {socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset)});}}>{'<'}</button>
+          <button onClick={()=> {
+            socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset)});
+            ReactDOM.render(
+              <div className='sidebarChart' id='loading'>
+                <img src={loading}/>
+              </div>
+              ,
+              document.getElementById('side'));
+            }}>{'<'}</button>
+
           <span>{(data.offset * 24) + 24} - {data.offset * 24}</span>
+
           <button onClick={ ()=> {
             if(data.offset > - 0){
               socket.emit("getHistoricalData", {id: data.data[0].sensors_id, offset: (data.offset - 2)});
+              ReactDOM.render(
+                <div className='sidebarChart' id='loading'>
+                  <img src={loading}/>
+                </div>
+                ,
+                document.getElementById('side'));
             } }}>
           {'>'}</button>
         </div>
