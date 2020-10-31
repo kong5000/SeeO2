@@ -82,6 +82,8 @@ export class MapContainer extends Component {
                 title="Click for more info."
                 name={`${sensor.name}'s air quality sensor`}
                 position={{ lat: sensor.latitude, lng: sensor.longitude }}
+                PM25={sensor.pm25}
+                PM10={sensor.pm10}
                 CO2={sensor.co2}
                 TVOC={sensor.tvoc}
                 id={sensor.id}
@@ -99,6 +101,8 @@ export class MapContainer extends Component {
           >
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
+              <p>PM25: {this.state.selectedPlace.PM25}</p>
+              <p>PM10: {this.state.selectedPlace.PM10}</p>
               <p>CO2: {this.state.selectedPlace.CO2} ppm</p>
               <p>TVOC: {this.state.selectedPlace.TVOC} mg/m3</p>
               <p>
