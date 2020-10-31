@@ -7,13 +7,21 @@ import logo from "./images/SeeO2_logo.png";
 export class SensorForm extends Component {
   newSensor = (event) => {
     event.preventDefault();
-    this.props.socket.emit("newSensor", {
-      email: this.state.email,
-      name: this.state.name,
-      url: this.state.url,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-    });
+    if(this.state !== null){
+      if(this.state.name && this.state.email && this.state.url && this.state.latitude && this.state.longitude){
+        this.props.socket.emit("newSensor", {
+          email: this.state.email,
+          name: this.state.name,
+          url: this.state.url,
+          latitude: this.state.latitude,
+          longitude: this.state.longitude,
+        });
+      } else {
+        alert("Please fill in all fields")
+      }
+    } else {
+      alert("Please fill in all fields")
+    }
   };
   
   render() {
