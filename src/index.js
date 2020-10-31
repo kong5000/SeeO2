@@ -9,6 +9,7 @@ import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
 const socket = ioClient("http://localhost:8002");
+require('dotenv').config()
 
 //Connect to the backend and render the frontend
 socket.on("connect", () => {
@@ -35,9 +36,11 @@ socket.on("connect", () => {
         <div className="controlls-container">
           <button
             onClick={() => {
+              console.log(data)
               socket.emit("getHistoricalData", {
                 id: data.data[0].sensors_id,
                 offset: data.offset,
+                timezone: data.timezone
               });
               ReactDOM.render(
                 <div className="sidebarChart" id="loading">
@@ -60,6 +63,7 @@ socket.on("connect", () => {
                 socket.emit("getHistoricalData", {
                   id: data.data[0].sensors_id,
                   offset: data.offset - 2,
+                  timezone: data.timezone
                 });
                 ReactDOM.render(
                   <div className="sidebarChart" id="loading">
