@@ -61,4 +61,16 @@
   font-weight: 700;
   font-size: 1.5em;
   margin-bottom: 10px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+#sensorForm > button:hover, .sidebar > button:hover {
+  border: 5px solid white;
+  color: lightblue;
+  background-color: #163d5f;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }

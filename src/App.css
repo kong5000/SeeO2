@@ -14,10 +14,12 @@
 .email-alert button {
   background-color: #163d5f;
   color: lightblue;
+  border: 3px solid #163d5f;
   border-radius: 5px;
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 5px;
+  transition-duration: 0.4s;
 }
 
 .email-alert button:hover {
