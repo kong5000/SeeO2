@@ -118,7 +118,7 @@ const getChartData = (data, dataKey, offset) => {
   let average = 0;
   let maximum = 0;
 
-  for (let i = 0 + offset * 140; i <= 139 + offset * 140; i++) {
+  for (let i = 0 + offset * 144; i <= 143 + offset * 144; i++) {
     const dataPoint = {};
     if (data[i]) {
       dataPoint.name = data[i].date;
@@ -138,7 +138,7 @@ const getChartData = (data, dataKey, offset) => {
       chartData.push(dataPoint);
     }
   }
-  average /= 140;
+  average /= 144;
 
   chartData.forEach((element)=>{
     if(element.empty){

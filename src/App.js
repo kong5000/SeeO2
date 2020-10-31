@@ -102,7 +102,7 @@ export class MapContainer extends Component {
                 TVOC={sensor.tvoc}
                 id={sensor.id}
                 icon={
-                  sensor.co2 > 2000 ? poor : sensor.co2 > 400 ? moderate : good
+                  sensor.pm25 > 35 ? poor : sensor.pm25 > 12 ? moderate : good
                 }
               />
             );
@@ -121,7 +121,7 @@ export class MapContainer extends Component {
               <span>PM10: {this.state.selectedPlace.PM10 !== -99 ? this.state.selectedPlace.PM10 : 'null'}</span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.pm25 > 35 ? " poor" : " all right"}
+                {this.state.selectedPlace.PM25 > 35 ? " poor" : " all right"}
               </p>
               <div className="email-alert">
                 <input
