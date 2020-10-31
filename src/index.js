@@ -80,6 +80,9 @@ socket.on("connect", () => {
         <div className="controlls-container">
           <h3 className="hoursAgo">Hours Ago</h3>
         </div>
+        <div className="controlls-container">
+          <h3 className="hoursAgo">Time Zone: {data.timezone}</h3>
+        </div>
         <Chart data={c02Data} dataKey="co2" fill="#8884d8" />
         <Chart data={tvocData} dataKey="tvoc" fill="#448844" />
         <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
