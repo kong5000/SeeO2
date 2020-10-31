@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import CurrentLocation from "./Map";
@@ -11,6 +11,7 @@ import poor from "./images/stop.png";
 import moderate from "./images/orange-blank.png";
 import good from "./images/ltblu-blank.png";
 import loading from './images/load.gif';
+import axios from "axios";
 
 export class MapContainer extends Component {
   state = {
@@ -23,15 +24,29 @@ export class MapContainer extends Component {
     url: "",
     latitude: 0,
     longitude: 0,
+    timezone: 'UTC'
   };
 
   onMarkerClick = (props, marker, e) => {
-    this.props.socket.emit("getHistoricalData", {id:marker.id, offset: -1});
+    console.log(process.env.REACT_APP_googleTimezoneApi)
+    axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${process.env.REACT_APP_googleTimezoneApi}`)
+    .then((res)=>{
+      const timezoneName = res.data.timeZoneName.split(" ")
+      let timezone = '';
+      timezoneName.forEach(element => {
+        timezone += element[0]
+      });
+      this.state.timezone = timezone;
+
+      this.props.socket.emit("getHistoricalData", {id:marker.id, offset: -1, timezone});
+    })
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
     });
+
+    console.log(this.props.google.maps.LatLng)
     //Render the loading image
     ReactDOM.render(
       <div className='sidebarChart' id='loading'>
@@ -66,7 +81,6 @@ export class MapContainer extends Component {
       alert('Email is missing @')
     }
   };
-
   emailInput = React.createRef();
 
   render() {
@@ -101,13 +115,13 @@ export class MapContainer extends Component {
           >
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
-              <p>PM25: {this.state.selectedPlace.PM25}</p>
-              <p>PM10: {this.state.selectedPlace.PM10}</p>
-              <p>CO2: {this.state.selectedPlace.CO2} ppm</p>
-              <p>TVOC: {this.state.selectedPlace.TVOC} mg/m3</p>
+              <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
+              <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span>
+              <span>PM25: {this.state.selectedPlace.PM25 !== -99 ? this.state.selectedPlace.PM25 : 'null'}</span>
+              <span>PM10: {this.state.selectedPlace.PM10 !== -99 ? this.state.selectedPlace.PM10 : 'null'}</span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.CO2 > 3000 ? " poor" : " all right"}
+                {this.state.selectedPlace.pm25 > 35 ? " poor" : " all right"}
               </p>
               <div className="email-alert">
                 <input
