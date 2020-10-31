@@ -10,7 +10,7 @@ export default class Example extends PureComponent {
     return (
       <BarChart
         width={320}
-        height={150}
+        height={300}
         data={this.props.data}
         margin={{
           top: 5, right: 0, left: 0, bottom: 5,
@@ -22,7 +22,6 @@ export default class Example extends PureComponent {
         <Tooltip />
         <Legend />
         <Bar dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
-        <Bar barCategoryGap={0} dataKey='null' stackId='x' fill="#000000" />
       </BarChart>
     );
   }
