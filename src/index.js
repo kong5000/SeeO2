@@ -8,8 +8,17 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
-const socket = ioClient("http://localhost:8002");
+
+let socket = null;
+
 require('dotenv').config()
+if(process.env.REACT_APP_USE_REMOTE_BACKEND === "true"){
+  console.log("Using remote backend")
+  socket = ioClient("https://see-o2-backend.herokuapp.com")
+}else{
+  socket = ioClient("http://localhost:8002");
+}
+
 
 //Connect to the backend and render the frontend
 socket.on("connect", () => {
