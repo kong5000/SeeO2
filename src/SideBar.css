@@ -3,6 +3,7 @@
 }
 .sidebar img {
   padding: 30px;
+  min-width: 20vw;
 }
 .sidebar {
   background-image: url('./images/cloud_background.jpg');
@@ -33,7 +34,20 @@
   border: 5px solid #163d5f;
   border-radius: 10px;
   cursor: pointer;
+  transition-duration: 0.4s;
 }
+
+.controlls-container > button:hover {
+  color: lightblue;
+  background-color: #163d5f;
+  width: 70px;
+  font-weight: 700;
+  font-size: 2em;
+  border: 5px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .controlls-container > span {
   font-weight: 700;
   font-size: 2em;
@@ -65,7 +79,17 @@
   transition-duration: 0.4s;
 }
 
-#sensorForm > button:hover, .sidebar > button:hover {
+#sensorForm > button:hover {
+  border: 5px solid white;
+  color: lightblue;
+  background-color: #163d5f;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.sidebar > button:hover {
   border: 5px solid white;
   color: lightblue;
   background-color: #163d5f;
