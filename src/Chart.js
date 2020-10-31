@@ -1,10 +1,19 @@
 import React, { PureComponent } from 'react';
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, La
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Rectangle
 } from 'recharts';
 
-export default class Example extends PureComponent {
+export default class Chart extends PureComponent {
   static jsfiddleUrl = 'https://jsfiddle.net/alidingling/30763kr7/';
+
+  CustomBar = (props) => {
+    let {fill} = props;
+    if(typeof(props[this.props.dataKey]) !== 'number') {
+        fill='transparent';
+    }
+  
+    return (<Rectangle {...props} fill={fill} />)
+  };
 
   render() {
     return (
@@ -21,7 +30,7 @@ export default class Example extends PureComponent {
         <YAxis/>
         <Tooltip />
         <Legend />
-        <Bar dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
+        <Bar shape={this.CustomBar} minPointSize={3} dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
       </BarChart>
     );
   }

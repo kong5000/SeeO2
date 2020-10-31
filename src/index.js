@@ -91,8 +91,8 @@ socket.on("connect", () => {
           data={[
             {
               name: "Avg",
-              c02: c02Avg,
-              tvoc: tvocAvg,
+              // c02: c02Avg,
+              // tvoc: tvocAvg,
               pm25: pm25Avg,
               pm10: pm10Avg,
             },
@@ -128,7 +128,7 @@ const getChartData = (data, dataKey, offset) => {
         data[i][dataKey] > maximum ? maximum = data[i][dataKey] : maximum = maximum;
         average += data[i][dataKey];
       } else {
-        dataPoint.empty = 100;
+        dataPoint.empty = 0;
       }
 
       chartData.push(dataPoint);
