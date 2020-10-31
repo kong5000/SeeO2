@@ -117,7 +117,7 @@ export class MapContainer extends Component {
               <h3>{this.state.selectedPlace.name}</h3>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
               <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span> */}
-              <span>PM25: {this.state.selectedPlace.PM25 !== -99 ? this.state.selectedPlace.PM25 : 'null'}</span>
+              <span>PM2.5: {this.state.selectedPlace.PM25 !== -99 ? this.state.selectedPlace.PM25 : 'null'}</span>
               <span>PM10: {this.state.selectedPlace.PM10 !== -99 ? this.state.selectedPlace.PM10 : 'null'}</span>
               <p>
                 Local Air Quality is

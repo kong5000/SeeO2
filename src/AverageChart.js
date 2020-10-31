@@ -21,9 +21,9 @@ export default class Example extends PureComponent {
         <XAxis type="number"/>
         <YAxis dataKey="name" type="category"/>
         <Tooltip /> 
-        <Bar dataKey='c02' fill="#8884d8" />
-        <Bar dataKey='tvoc' fill="#448844" />
-        <Bar dataKey='pm25' fill="#884444" />
+        {/* <Bar dataKey='c02' fill="#8884d8" />
+        <Bar dataKey='tvoc' fill="#448844" /> */}
+        <Bar name="pm2.5" dataKey='pm25' fill="#884444" />
         <Bar dataKey='pm10' fill="#888888" />
       </BarChart>
     );

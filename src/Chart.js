@@ -22,15 +22,15 @@ export default class Chart extends PureComponent {
         height={300}
         data={this.props.data}
         margin={{
-          top: 5, right: 0, left: 0, bottom: 5,
+          top: 0, right: 0, left: 0, bottom: 0,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" tick={false} reversed={true}></XAxis>
         <YAxis/>
         <Tooltip />
-        <Legend />
-        <Bar shape={this.CustomBar} minPointSize={3} dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
+        <Legend wrapperStyle={{bottom: 30}} />
+        <Bar shape={this.CustomBar} minPointSize={3} name={this.props.dataKey !== 'pm25' ? this.props.dataKey : "pm2.5"} dataKey={this.props.dataKey} stackId='x' fill={this.props.fill} />
       </BarChart>
     );
   }
