@@ -10,7 +10,7 @@ import InfoWindowX from "./infoWindowX";
 import poor from "./images/stop.png";
 import moderate from "./images/orange-blank.png";
 import good from "./images/ltblu-blank.png";
-import loading from './images/load.gif';
+import loading from "./images/load.gif";
 import axios from "axios";
 
 export class MapContainer extends Component {
@@ -24,36 +24,45 @@ export class MapContainer extends Component {
     url: "",
     latitude: 0,
     longitude: 0,
-    timezone: 'UTC'
+    timezone: "UTC",
   };
 
   onMarkerClick = (props, marker, e) => {
-    console.log(process.env.REACT_APP_googleTimezoneApi)
-    axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${process.env.REACT_APP_googleTimezoneApi}`)
-    .then((res)=>{
-      const timezoneName = res.data.timeZoneName.split(" ")
-      let timezone = '';
-      timezoneName.forEach(element => {
-        timezone += element[0]
-      });
-      this.state.timezone = timezone;
+    // console.log(process.env.REACT_APP_googleTimezoneApi);
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${
+          process.env.REACT_APP_googleTimezoneApi
+        }`
+      )
+      .then((res) => {
+        const timezoneName = res.data.timeZoneName.split(" ");
+        let timezone = "";
+        timezoneName.forEach((element) => {
+          timezone += element[0];
+        });
+        this.state.timezone = timezone;
 
-      this.props.socket.emit("getHistoricalData", {id:marker.id, offset: -1, timezone});
-    })
+        this.props.socket.emit("getHistoricalData", {
+          id: marker.id,
+          offset: -1,
+          timezone,
+        });
+      });
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
     });
 
-    console.log(this.props.google.maps.LatLng)
+    // console.log(this.props.google.maps.LatLng);
     //Render the loading image
     ReactDOM.render(
-      <div className='sidebarChart' id='loading'>
-        <img src={loading} alt="loading"/>
-      </div>
-      ,
-      document.getElementById('side'));
+      <div className="sidebarChart" id="loading">
+        <img src={loading} alt="loading" />
+      </div>,
+      document.getElementById("side")
+    );
   };
 
   onClose = (props) => {
@@ -62,23 +71,21 @@ export class MapContainer extends Component {
         showingInfoWindow: false,
         activeMarker: null,
       });
-      ReactDOM.render(
-        <SideBar />,
-        document.getElementById('side'));
+      ReactDOM.render(<SideBar />, document.getElementById("side"));
     }
   };
 
   newAlert = (event) => {
     console.log(this.emailInput.current.value);
     event.preventDefault();
-    if(this.emailInput.current.value.includes('@')){
+    if (this.emailInput.current.value.includes("@")) {
       this.props.socket.emit("newAlert", {
         email: this.emailInput.current.value,
         sensors_id: this.state.selectedPlace.id,
       });
       this.emailInput.current.value = "";
     } else {
-      alert('Email is missing @')
+      alert("Email is missing @");
     }
   };
   emailInput = React.createRef();
@@ -117,11 +124,21 @@ export class MapContainer extends Component {
               <h3>{this.state.selectedPlace.name}</h3>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
               <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span> */}
-              <span>PM2.5: {this.state.selectedPlace.PM25 !== -99 ? this.state.selectedPlace.PM25 : 'null'}</span>
-              <span>PM10: {this.state.selectedPlace.PM10 !== -99 ? this.state.selectedPlace.PM10 : 'null'}</span>
+              <span>
+                PM2.5:{" "}
+                {this.state.selectedPlace.PM25 !== -99
+                  ? this.state.selectedPlace.PM25
+                  : "null"}
+              </span>
+              <span>
+                PM10:{" "}
+                {this.state.selectedPlace.PM10 !== -99
+                  ? this.state.selectedPlace.PM10
+                  : "null"}
+              </span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.PM25 > 35 ? " poor" : " all right"}
+                {this.state.selectedPlace.PM25 > 35 ? " poor" : this.state.selectedPlace.PM25 > 12 ? " moderate" : " good"}
               </p>
               <div className="email-alert">
                 <input
@@ -145,7 +162,7 @@ export class MapContainer extends Component {
           </InfoWindowX>
         </CurrentLocation>
         <div id="side">
-          <SideBar socket={this.props.socket}/>
+          <SideBar socket={this.props.socket} />
         </div>
       </div>
     );
