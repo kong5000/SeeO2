@@ -124,12 +124,11 @@ export class MapContainer extends Component {
               />
             );
           })}
-
           <InfoWindowX
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
+            visible={this.state.selectedPlace.name !== "Your Current Location" ? this.state.showingInfoWindow : null}
             onClose={this.onClose}
-          >
+            >
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
