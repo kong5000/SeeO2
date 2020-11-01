@@ -34,7 +34,7 @@ code {
   color: #163d5f;
   min-width: 1px;
   width: 25vw;
-  height: 110%;
+  height: 100vh;
   display: flex;
   justify-content: left;
   align-items: left;

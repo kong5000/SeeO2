@@ -4,7 +4,7 @@ const mapStyles = {
   map: {
     position: "relative",
     width: "75vw",
-    height: "110vh",
+    height: "100vh",
     margin: "0",
   },
 };
