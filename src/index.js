@@ -33,8 +33,8 @@ socket.on("connect", () => {
 
   socket.on("receiveHistoricalData", (data) => {
     //Render historical data where the sidebar is
-    const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
-    const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
+    // const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
+    // const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
     const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
     // const allAverages = getDailyAverages(data.data)
@@ -49,7 +49,8 @@ socket.on("connect", () => {
               socket.emit("getHistoricalData", {
                 id: data.data[0].sensors_id,
                 offset: data.offset,
-                timezone: data.timezone
+                timezone: data.timezone,
+                timezoneOffset: data.timezoneOffset
               });
               ReactDOM.render(
                 <div className="sidebarChart" id="loading">
@@ -72,7 +73,8 @@ socket.on("connect", () => {
                 socket.emit("getHistoricalData", {
                   id: data.data[0].sensors_id,
                   offset: data.offset - 2,
-                  timezone: data.timezone
+                  timezone: data.timezone,
+                  timezoneOffset: data.timezoneOffset
                 });
                 ReactDOM.render(
                   <div className="sidebarChart" id="loading">
@@ -109,7 +111,7 @@ socket.on("connect", () => {
           dataKey="average"
         />
 
-        {/* <AllAveragesChart data={allAverages} dataKey="co2"/> */}
+        {/* <AllAveragesChart data={allAverages} dataKey="pm25"/> */}
       </div>,
       document.getElementById("side")
     );
@@ -167,8 +169,8 @@ const getDailyAverages = (data) => {
     const date = element.date.split(", ");
 
     days[date[0] + date[1]]
-      ? (days[date[0] + date[1]] += element.co2)
-      : (days[date[0] + date[1]] = element.co2);
+      ? (days[date[0] + date[1]] += element.pm25)
+      : (days[date[0] + date[1]] = element.pm25);
     averages[date[0] + date[1]]
       ? (averages[date[0] + date[1]] += 1)
       : (averages[date[0] + date[1]] = 1);

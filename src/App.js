@@ -37,7 +37,7 @@ export class MapContainer extends Component {
     if (marker.name !== "Your Current Location") {
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&rawOffest=true&key=${
             process.env.REACT_APP_googleTimezoneApi
           }`
         )
@@ -52,7 +52,8 @@ export class MapContainer extends Component {
           this.props.socket.emit("getHistoricalData", {
             id: marker.id,
             offset: -1,
-            timezone,
+            timezoneOffset: res.data.rawOffset,
+            timezone
           });
         });
 
