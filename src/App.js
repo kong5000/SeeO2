@@ -5,6 +5,7 @@ import CurrentLocation from "./Map";
 import SideBar from "./SideBar";
 import "./App.css";
 import Marker from "./Marker";
+import HomeMarker from "./HomeMarker";
 import InfoWindowX from "./infoWindowX";
 import poor from "./images/stop.png";
 import moderate from "./images/orange-blank.png";
@@ -40,7 +41,7 @@ export class MapContainer extends Component {
         timezoneName.forEach((element) => {
           timezone += element[0];
         });
-        this.state.timezone = timezone;
+        this.setState({timezone: timezone});
 
         this.props.socket.emit("getHistoricalData", {
           id: marker.id,
@@ -92,8 +93,19 @@ export class MapContainer extends Component {
     return (
       <div className="main-container">
         <CurrentLocation centerAroundCurrentLocation google={this.props.google}>
-          <Marker onClick={this.onMarkerClick} name={"Current Location"} />
-
+          <HomeMarker
+            onClick={this.onMarkerClick}
+            name={"Your Current Location"}
+          />
+          <InfoWindowX
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}
+            onClose={this.onClose}
+          >
+            <div className="info-display">
+              <h3>{this.state.selectedPlace.name}</h3>
+            </div>
+          </InfoWindowX>
           {this.props.sensors.map((sensor) => {
             return (
               <Marker
@@ -136,7 +148,11 @@ export class MapContainer extends Component {
               </span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.PM25 > 35 ? " unhealthy" : this.state.selectedPlace.PM25 > 12 ? " moderate" : " good"}
+                {this.state.selectedPlace.PM25 > 35
+                  ? " unhealthy"
+                  : this.state.selectedPlace.PM25 > 12
+                  ? " moderate"
+                  : " good"}
               </p>
               <div className="email-alert">
                 <input
