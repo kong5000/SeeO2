@@ -28,40 +28,43 @@ export class MapContainer extends Component {
   };
 
   onMarkerClick = (props, marker, e) => {
-    // console.log(process.env.REACT_APP_googleTimezoneApi);
-    axios
-      .get(
-        `https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${
-          process.env.REACT_APP_googleTimezoneApi
-        }`
-      )
-      .then((res) => {
-        const timezoneName = res.data.timeZoneName.split(" ");
-        let timezone = "";
-        timezoneName.forEach((element) => {
-          timezone += element[0];
-        });
-        this.setState({timezone: timezone});
-
-        this.props.socket.emit("getHistoricalData", {
-          id: marker.id,
-          offset: -1,
-          timezone,
-        });
-      });
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
     });
 
-    //Render the loading image
-    ReactDOM.render(
-      <div className="sidebarChart" id="loading">
-        <img src={loading} alt="loading" />
-      </div>,
-      document.getElementById("side")
-    );
+    if (marker.name !== "Your Current Location") {
+      axios
+        .get(
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${e.latLng.lat()},${e.latLng.lng()}&timestamp=1331161200&key=${
+            process.env.REACT_APP_googleTimezoneApi
+          }`
+        )
+        .then((res) => {
+          const timezoneName = res.data.timeZoneName.split(" ");
+          let timezone = "";
+          timezoneName.forEach((element) => {
+            timezone += element[0];
+          });
+          this.setState({ timezone: timezone });
+
+          this.props.socket.emit("getHistoricalData", {
+            id: marker.id,
+            offset: -1,
+            timezone,
+          });
+        });
+
+      //Render the loading image
+      console.log("True");
+      ReactDOM.render(
+        <div className="sidebarChart" id="loading">
+          <img src={loading} alt="loading" />
+        </div>,
+        document.getElementById("side")
+      );
+    }
   };
 
   onClose = (props) => {
@@ -126,9 +129,13 @@ export class MapContainer extends Component {
           })}
           <InfoWindowX
             marker={this.state.activeMarker}
-            visible={this.state.selectedPlace.name !== "Your Current Location" ? this.state.showingInfoWindow : null}
+            visible={
+              this.state.selectedPlace.name !== "Your Current Location"
+                ? this.state.showingInfoWindow
+                : null
+            }
             onClose={this.onClose}
-            >
+          >
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
