@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import CurrentLocation from "./Map";
 import SideBar from "./SideBar";
-import SensorForm from "./SensorForm";
 import "./App.css";
 import Marker from "./Marker";
 import InfoWindowX from "./infoWindowX";
@@ -55,7 +54,6 @@ export class MapContainer extends Component {
       showingInfoWindow: true,
     });
 
-    // console.log(this.props.google.maps.LatLng);
     //Render the loading image
     ReactDOM.render(
       <div className="sidebarChart" id="loading">
