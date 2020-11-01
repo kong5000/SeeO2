@@ -138,7 +138,7 @@ export class MapContainer extends Component {
               </span>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.PM25 > 35 ? " poor" : this.state.selectedPlace.PM25 > 12 ? " moderate" : " good"}
+                {this.state.selectedPlace.PM25 > 35 ? " unhealthy" : this.state.selectedPlace.PM25 > 12 ? " moderate" : " good"}
               </p>
               <div className="email-alert">
                 <input
