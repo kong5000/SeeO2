@@ -232,7 +232,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
     if(i < 8){
       const average = days[day] / averages[day];
       dailyAverage.push({
-        name: day,
+        date: day,
         average,
         fill: colour[i - 1],
       });
@@ -242,5 +242,5 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
   }
   weeklyAverage /= 7;
 
-  return [dailyAverage, weeklyAverage];
+  return [dailyAverage.reverse(), weeklyAverage];
 };
