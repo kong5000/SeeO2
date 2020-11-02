@@ -31,15 +31,15 @@ socket.on("connect", () => {
   });
 
   socket.on("receiveHistoricalData", (data) => {
-    const views = ['Days', 'Weeks', 'Months']
+    const views = ['Hours', 'Days', 'Months'];
+    
     //Render historical data where the sidebar is
     // const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
     // const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
     const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
-    const pm25WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm25", [15, -2, -2]);
-    const pm10WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm10", [5, 5, 5]);
-
+    const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", [15, -2, -2]);
+    const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", [5, 5, 5]);
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
@@ -112,21 +112,17 @@ socket.on("connect", () => {
           <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
           <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
           <AverageChart
-            data={[
-              {
-                name: "Avg",
-                // c02: c02Avg,
-                // tvoc: tvocAvg,
-                pm25: pm25Avg,
-                pm10: pm10Avg,
-              },
-            ]}
+            data={[{name: "Avg", pm25: pm25Avg, pm10: pm10Avg,},]}
             dataKey="average"
           /></div>)
         :
         (<div>
           <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
           <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/>
+          <AverageChart
+            data={[{name: "Avg", pm25: pm25AvgWeek, pm10: pm10AvgWeek,},]}
+            dataKey="average"
+          />
           </div>)
         }
       </div>,
@@ -197,30 +193,36 @@ const getChartData = (data, dataKey, offset) => {
 //get average data for the last 7 days
 const getWeeklyAverages = (data, offset, dataKey, colour) => {
   const dailyAverage = [];
+  let weeklyAverage = 0;
   const days = {};
   const averages = {};
 
   data.forEach((element) => {
     const date = element.date.split(", ");
 
-    days[date[0 + offset] + date[1 + offset]]
-      ? (days[date[0 + offset] + date[1 + offset]] += element[dataKey])
-      : (days[date[0 + offset] + date[1 + offset]] = element[dataKey]);
-    averages[date[0 + offset] + date[1 + offset]]
-      ? (averages[date[0 + offset] + date[1 + offset]] += 1)
-      : (averages[date[0 + offset] + date[1 + offset]] = 1);
+    if(element[dataKey] !== -99){
+      days[date[0 + offset] + date[1 + offset]]
+        ? (days[date[0 + offset] + date[1 + offset]] += element[dataKey])
+        : (days[date[0 + offset] + date[1 + offset]] = element[dataKey]);
+      averages[date[0 + offset] + date[1 + offset]]
+        ? (averages[date[0 + offset] + date[1 + offset]] += 1)
+        : (averages[date[0 + offset] + date[1 + offset]] = 1);
+    }
   });
   let i = 1;
   for (const day in days) {
     if(i < 8){
+      const average = days[day] / averages[day];
       dailyAverage.push({
         name: day,
-        average: days[day] / averages[day],
+        average,
         fill: `#${i * 12 + colour[0]}${i * 12 + colour[1]}${i * 12 + colour[2]}`,
       });
+      average != -99 ? weeklyAverage += average : weeklyAverage += 0
       i++;
     }
   }
+  weeklyAverage /= 7;
 
-  return dailyAverage;
+  return [dailyAverage, weeklyAverage];
 };
