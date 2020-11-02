@@ -1,10 +1,9 @@
-import React, { Fragment } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import AllAveragesChart from "./AllAveragesChart";
-import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
@@ -12,14 +11,13 @@ import { render } from "@testing-library/react";
 
 let socket = null;
 
-require('dotenv').config()
-if(process.env.REACT_APP_USE_REMOTE_BACKEND === "true"){
-  console.log("Using remote backend")
-  socket = ioClient("https://see-o2-backend.herokuapp.com")
-}else{
+require("dotenv").config();
+if (process.env.REACT_APP_USE_REMOTE_BACKEND === "true") {
+  console.log("Using remote backend");
+  socket = ioClient("https://see-o2-backend.herokuapp.com");
+} else {
   socket = ioClient("http://localhost:8002");
 }
-
 
 //Connect to the backend and render the frontend
 socket.on("connect", () => {
@@ -39,8 +37,8 @@ socket.on("connect", () => {
     // const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
     const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
-    const pm25WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm25");
-    const pm10WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm10");
+    const pm25WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm25", [15, -2, -2]);
+    const pm10WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm10", [5, 5, 5]);
 
     ReactDOM.render(
       <div className="sidebarChart">
@@ -110,7 +108,7 @@ socket.on("connect", () => {
         {/* <Chart data={c02Data} dataKey="co2" fill="#8884d8" />
         <Chart data={tvocData} dataKey="tvoc" fill="#448844" /> */}
         {data.dataView === 0 ?
-          (<Fragment>
+          (<div>
           <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
           <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
           <AverageChart
@@ -124,12 +122,12 @@ socket.on("connect", () => {
               },
             ]}
             dataKey="average"
-          /></Fragment>)
+          /></div>)
         :
-        (<Fragment>
+        (<div>
           <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
           <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/>
-          </Fragment>)
+          </div>)
         }
       </div>,
       document.getElementById("side")
@@ -171,7 +169,9 @@ const getChartData = (data, dataKey, offset) => {
 
       if (data[i][dataKey] !== -99) {
         dataPoint[dataKey] = data[i][dataKey];
-        data[i][dataKey] > maximum ? maximum = data[i][dataKey] : maximum = maximum;
+        data[i][dataKey] > maximum
+          ? (maximum = data[i][dataKey])
+          : (maximum = maximum);
         average += data[i][dataKey];
       } else {
         dataPoint.empty = 0;
@@ -186,17 +186,16 @@ const getChartData = (data, dataKey, offset) => {
   }
   average /= 144;
 
-  chartData.forEach((element)=>{
-    if(element.empty){
+  chartData.forEach((element) => {
+    if (element.empty) {
       element.null = maximum - element[dataKey];
     }
-  })
-  console.log(chartData)
+  });
   return [chartData, average];
 };
 
 //get average data for the last 7 days
-const getWeeklyAverages = (data, offset, dataKey) => {
+const getWeeklyAverages = (data, offset, dataKey, colour) => {
   const dailyAverage = [];
   const days = {};
   const averages = {};
@@ -217,7 +216,7 @@ const getWeeklyAverages = (data, offset, dataKey) => {
       dailyAverage.push({
         name: day,
         average: days[day] / averages[day],
-        fill: `#${i * 13 + 10}${i * 4 + 10}${i * 4 + 10}`,
+        fill: `#${i * 12 + colour[0]}${i * 12 + colour[1]}${i * 12 + colour[2]}`,
       });
       i++;
     }
@@ -225,8 +224,3 @@ const getWeeklyAverages = (data, offset, dataKey) => {
 
   return dailyAverage;
 };
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
