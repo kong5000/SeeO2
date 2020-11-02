@@ -7,7 +7,7 @@ import AllAveragesChart from "./AllAveragesChart";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
-import { render } from "@testing-library/react";
+// import { render } from "@testing-library/react";
 
 const pm25Colour = [
   "#884444",
@@ -185,7 +185,7 @@ const getChartData = (data, dataKey, offset) => {
         dataPoint[dataKey] = data[i][dataKey];
         data[i][dataKey] > maximum
           ? (maximum = data[i][dataKey])
-          : (maximum = maximum);
+          : (maximum = 0);
         average += data[i][dataKey];
       } else {
         dataPoint.empty = 0;
@@ -236,7 +236,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
         average,
         fill: colour[i - 1],
       });
-      average != -99 ? weeklyAverage += average : weeklyAverage += 0
+      average !== -99 ? weeklyAverage += average : weeklyAverage += 0
       i++;
     }
   }
