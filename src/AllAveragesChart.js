@@ -20,7 +20,7 @@ export default class Example extends PureComponent {
         <YAxis dataKey="name" type="category"/> */}
         <Tooltip />
         <RadialBar minAngle={15} background clockWise dataKey="average" />
-        <Legend iconSize={10} width={120} height={140} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
+        <Legend iconSize={10} width={120} height={70} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
       </RadialBarChart>
     );
   }

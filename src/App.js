@@ -51,9 +51,10 @@ export class MapContainer extends Component {
 
           this.props.socket.emit("getHistoricalData", {
             id: marker.id,
-            offset: -1,
+            offset: 0,
             timezoneOffset: res.data.rawOffset,
-            timezone
+            timezone,
+            dataView: 0
           });
         });
 

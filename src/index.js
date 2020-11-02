@@ -32,34 +32,36 @@ socket.on("connect", () => {
   });
 
   socket.on("receiveHistoricalData", (data) => {
+    const views = ['Days', 'Weeks', 'Months']
     //Render historical data where the sidebar is
     // const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
     // const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
     const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
-    // const allAverages = getDailyAverages(data.data)
+    const pm25WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm25");
+    const pm10WeeklyAverages = getWeeklyAverages(data.data, data.offset*7, "pm10");
 
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
         <div className="controlls-container">
+          <button>
+            {"<"}
+          </button>
+          <span>{views[data.dataView]}</span>
+          <button>
+            {">"}
+          </button>
+        </div>
+        <div className="controlls-container">
           <button
-            onClick={() => {
-              console.log(data)
-              socket.emit("getHistoricalData", {
-                id: data.data[0].sensors_id,
-                offset: data.offset,
+            onClick={() => {nextPage({
+                data: data.data,
+                offset: data.offset + 1,
                 timezone: data.timezone,
-                timezoneOffset: data.timezoneOffset
-              });
-              ReactDOM.render(
-                <div className="sidebarChart" id="loading">
-                  <img src={loading} alt="loading" />
-                </div>,
-                document.getElementById("side")
-              );
-            }}
-          >
+                timezoneOffset: data.timezoneOffset,
+                dataView: data.dataView
+              });}}>
             {"<"}
           </button>
 
@@ -70,24 +72,19 @@ socket.on("connect", () => {
           <button
             onClick={() => {
               if (data.offset > -0) {
-                socket.emit("getHistoricalData", {
-                  id: data.data[0].sensors_id,
-                  offset: data.offset - 2,
+                nextPage({
+                  data: data.data,
+                  offset: data.offset - 1,
                   timezone: data.timezone,
-                  timezoneOffset: data.timezoneOffset
+                  timezoneOffset: data.timezoneOffset,
+                  dataView: data.dataView
                 });
-                ReactDOM.render(
-                  <div className="sidebarChart" id="loading">
-                    <img src={loading} alt="loading" />
-                  </div>,
-                  document.getElementById("side")
-                );
               }
             }}
           >
             {">"}
           </button>
-        </div>
+        </div> 
         <div className="controlls-container">
           <h3 className="hoursAgo">Hours Ago</h3>
         </div>
@@ -111,7 +108,8 @@ socket.on("connect", () => {
           dataKey="average"
         />
 
-        {/* <AllAveragesChart data={allAverages} dataKey="pm25"/> */}
+        {/* <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
+        <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/> */}
       </div>,
       document.getElementById("side")
     );
@@ -122,6 +120,22 @@ socket.on("connect", () => {
     return;
   });
 });
+
+const nextPage = (data) => {
+  socket.emit("getHistoricalData", {
+    id: data.data[0].sensors_id,
+    offset: data.offset,
+    timezone: data.timezone,
+    timezoneOffset: data.timezoneOffset,
+    dataView: data.dataView
+  });
+  ReactDOM.render(
+    <div className="sidebarChart" id="loading">
+      <img src={loading} alt="loading" />
+    </div>,
+    document.getElementById("side")
+  );
+}
 
 //Get data from last 24 hours for bar charts
 const getChartData = (data, dataKey, offset) => {
@@ -160,7 +174,8 @@ const getChartData = (data, dataKey, offset) => {
   return [chartData, average];
 };
 
-const getDailyAverages = (data) => {
+//get average data for the last 7 days
+const getWeeklyAverages = (data, offset, dataKey) => {
   const dailyAverage = [];
   const days = {};
   const averages = {};
@@ -168,21 +183,23 @@ const getDailyAverages = (data) => {
   data.forEach((element) => {
     const date = element.date.split(", ");
 
-    days[date[0] + date[1]]
-      ? (days[date[0] + date[1]] += element.pm25)
-      : (days[date[0] + date[1]] = element.pm25);
-    averages[date[0] + date[1]]
-      ? (averages[date[0] + date[1]] += 1)
-      : (averages[date[0] + date[1]] = 1);
+    days[date[0 + offset] + date[1 + offset]]
+      ? (days[date[0 + offset] + date[1 + offset]] += element[dataKey])
+      : (days[date[0 + offset] + date[1 + offset]] = element[dataKey]);
+    averages[date[0 + offset] + date[1 + offset]]
+      ? (averages[date[0 + offset] + date[1 + offset]] += 1)
+      : (averages[date[0 + offset] + date[1 + offset]] = 1);
   });
   let i = 1;
   for (const day in days) {
-    dailyAverage.push({
-      name: day,
-      average: days[day] / averages[day],
-      fill: `#${i * 13 + 10}${i * 5 + 10}${i * 5 + 10}`,
-    });
-    i++;
+    if(i < 8){
+      dailyAverage.push({
+        name: day,
+        average: days[day] / averages[day],
+        fill: `#${i * 13 + 10}${i * 5 + 10}${i * 5 + 10}`,
+      });
+      i++;
+    }
   }
 
   return dailyAverage;
