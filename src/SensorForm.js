@@ -27,7 +27,7 @@ export class SensorForm extends Component {
   render() {
     return (
       <div className="sidebar">
-        <img src={logo} alt="SeeO3 logo" width="250vw" />
+        <img src={logo} alt="SeeO2 logo" width="250vw" />
          <h1>Register Your Sensor</h1>
          <form id="sensorForm" onSubmit={this.newSensor}>
            <input
