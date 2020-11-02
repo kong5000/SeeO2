@@ -77,11 +77,10 @@ socket.on("connect", () => {
               });}}>
             {"<"}
           </button>
-
-          <span>
-            {data.offset * 24 + 24} - {data.offset * 24}
-          </span>
-
+          {data.dataView === 0 ?
+            (<span>{data.offset * 24 + 24} - {data.offset * 24}</span>)
+              : 
+            (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)}
           <button
             onClick={() => {
               if (data.offset > -0) {
@@ -99,7 +98,11 @@ socket.on("connect", () => {
           </button>
         </div> 
         <div className="controlls-container">
-          <h3 className="hoursAgo">Hours Ago</h3>
+          {data.dataView === 0 ?
+            (<h3 className="hoursAgo">Hours Ago</h3>)
+            :
+            (<h3 className="hoursAgo">Days Ago</h3>)
+          }
         </div>
         <div className="controlls-container">
           <h3 className="hoursAgo">Time Zone: {data.timezone}</h3>
@@ -214,7 +217,7 @@ const getWeeklyAverages = (data, offset, dataKey) => {
       dailyAverage.push({
         name: day,
         average: days[day] / averages[day],
-        fill: `#${i * 13 + 10}${i * 5 + 10}${i * 5 + 10}`,
+        fill: `#${i * 13 + 10}${i * 4 + 10}${i * 4 + 10}`,
       });
       i++;
     }
