@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
+import { render } from "@testing-library/react";
 
 let socket = null;
 
@@ -45,11 +46,23 @@ socket.on("connect", () => {
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
         <div className="controlls-container">
-          <button>
+          <button onClick={() => {nextPage({
+                data: data.data,
+                offset: 0,
+                timezone: data.timezone,
+                timezoneOffset: data.timezoneOffset,
+                dataView: data.dataView > 0 ? data.dataView - 1 : data.dataView
+              });}}>
             {"<"}
           </button>
           <span>{views[data.dataView]}</span>
-          <button>
+          <button onClick={() => {nextPage({
+                data: data.data,
+                offset: 0,
+                timezone: data.timezone,
+                timezoneOffset: data.timezoneOffset,
+                dataView: data.dataView < 3 ? data.dataView + 1 : data.dataView
+              });}}>
             {">"}
           </button>
         </div>
@@ -93,23 +106,28 @@ socket.on("connect", () => {
         </div>
         {/* <Chart data={c02Data} dataKey="co2" fill="#8884d8" />
         <Chart data={tvocData} dataKey="tvoc" fill="#448844" /> */}
-        <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
-        <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
-        <AverageChart
-          data={[
-            {
-              name: "Avg",
-              // c02: c02Avg,
-              // tvoc: tvocAvg,
-              pm25: pm25Avg,
-              pm10: pm10Avg,
-            },
-          ]}
-          dataKey="average"
-        />
-
-        {/* <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
-        <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/> */}
+        {data.dataView === 0 ?
+          (<Fragment>
+          <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
+          <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
+          <AverageChart
+            data={[
+              {
+                name: "Avg",
+                // c02: c02Avg,
+                // tvoc: tvocAvg,
+                pm25: pm25Avg,
+                pm10: pm10Avg,
+              },
+            ]}
+            dataKey="average"
+          /></Fragment>)
+        :
+        (<Fragment>
+          <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
+          <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/>
+          </Fragment>)
+        }
       </div>,
       document.getElementById("side")
     );
