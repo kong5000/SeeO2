@@ -9,6 +9,24 @@ import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
 import { render } from "@testing-library/react";
 
+const pm25Colour = [
+  "#884444",
+  "#773B3B",
+  "#683434",
+  "#552A2A",
+  "#472323",
+  "#3E1F1F",
+  "#341A1A"
+]
+const pm10Colour = [
+  "#888888",
+  "#777777",
+  "#666666",
+  "#555555",
+  "#444444",
+  "#333333",
+  "#222222"
+]
 let socket = null;
 
 require("dotenv").config();
@@ -38,8 +56,8 @@ socket.on("connect", () => {
     // const [tvocData, tvocAvg] = getChartData(data.data, "tvoc", data.offset);
     const [pm25Data, pm25Avg] = getChartData(data.data, "pm25", data.offset);
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
-    const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", [15, -2, -2]);
-    const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", [5, 5, 5]);
+    const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", pm25Colour);
+    const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", pm10Colour);
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
@@ -216,7 +234,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
       dailyAverage.push({
         name: day,
         average,
-        fill: `#${i * 12 + colour[0]}${i * 12 + colour[1]}${i * 12 + colour[2]}`,
+        fill: colour[i - 1],
       });
       average != -99 ? weeklyAverage += average : weeklyAverage += 0
       i++;

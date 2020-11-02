@@ -19,7 +19,7 @@ export default class Chart extends PureComponent {
     return (
       <BarChart
         width={320}
-        height={300}
+        height={200}
         data={this.props.data}
         margin={{
           top: 0, right: 0, left: 0, bottom: 0,

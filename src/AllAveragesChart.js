@@ -14,6 +14,8 @@ export default class Example extends PureComponent {
 
   render() {
     return (
+      <div>
+      <u>{this.props.dataKey}</u>
       <RadialBarChart width={200} height={200} cx={100} cy={100} innerRadius={5} outerRadius={80} barSize={10} data={this.props.data}>
         {/* <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number"/> */}
@@ -22,6 +24,7 @@ export default class Example extends PureComponent {
         <RadialBar minAngle={15} background clockWise dataKey="average" />
         <Legend iconSize={10} width={120} height={70} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
       </RadialBarChart>
+      </div>
     );
   }
 }
