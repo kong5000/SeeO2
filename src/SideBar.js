@@ -8,7 +8,7 @@ export class SideBar extends Component {
   render() {
     return (
       <div className="sidebar">
-        <img src={logo} alt="SeeO3 logo" width="250vw" />
+        <img src={logo} alt="SeeO2 logo" width="250vw" />
         <p>
           <span className="logo">See O2</span> is an app to help you find the
           current air quality more locally, exactly where you live or where you
