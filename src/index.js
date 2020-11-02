@@ -1,24 +1,22 @@
-import React, { Fragment } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import AllAveragesChart from "./AllAveragesChart";
-import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
 
 let socket = null;
 
-require('dotenv').config()
-if(process.env.REACT_APP_USE_REMOTE_BACKEND === "true"){
-  console.log("Using remote backend")
-  socket = ioClient("https://see-o2-backend.herokuapp.com")
-}else{
+require("dotenv").config();
+if (process.env.REACT_APP_USE_REMOTE_BACKEND === "true") {
+  console.log("Using remote backend");
+  socket = ioClient("https://see-o2-backend.herokuapp.com");
+} else {
   socket = ioClient("http://localhost:8002");
 }
-
 
 //Connect to the backend and render the frontend
 socket.on("connect", () => {
@@ -45,12 +43,12 @@ socket.on("connect", () => {
         <div className="controlls-container">
           <button
             onClick={() => {
-              console.log(data)
+              console.log(data);
               socket.emit("getHistoricalData", {
                 id: data.data[0].sensors_id,
                 offset: data.offset,
                 timezone: data.timezone,
-                timezoneOffset: data.timezoneOffset
+                timezoneOffset: data.timezoneOffset,
               });
               ReactDOM.render(
                 <div className="sidebarChart" id="loading">
@@ -74,7 +72,7 @@ socket.on("connect", () => {
                   id: data.data[0].sensors_id,
                   offset: data.offset - 2,
                   timezone: data.timezone,
-                  timezoneOffset: data.timezoneOffset
+                  timezoneOffset: data.timezoneOffset,
                 });
                 ReactDOM.render(
                   <div className="sidebarChart" id="loading">
@@ -136,7 +134,9 @@ const getChartData = (data, dataKey, offset) => {
 
       if (data[i][dataKey] !== -99) {
         dataPoint[dataKey] = data[i][dataKey];
-        data[i][dataKey] > maximum ? maximum = data[i][dataKey] : maximum = maximum;
+        data[i][dataKey] > maximum
+          ? (maximum = data[i][dataKey])
+          : (maximum = maximum);
         average += data[i][dataKey];
       } else {
         dataPoint.empty = 0;
@@ -151,12 +151,11 @@ const getChartData = (data, dataKey, offset) => {
   }
   average /= 144;
 
-  chartData.forEach((element)=>{
-    if(element.empty){
+  chartData.forEach((element) => {
+    if (element.empty) {
       element.null = maximum - element[dataKey];
     }
-  })
-  console.log(chartData)
+  });
   return [chartData, average];
 };
 
@@ -187,8 +186,3 @@ const getDailyAverages = (data) => {
 
   return dailyAverage;
 };
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

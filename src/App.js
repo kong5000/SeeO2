@@ -1,4 +1,4 @@
-import React, { Component, Fragment, SyntheticEvent } from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { GoogleApiWrapper } from "google-maps-react";
 import CurrentLocation from "./Map";
@@ -58,7 +58,6 @@ export class MapContainer extends Component {
         });
 
       //Render the loading image
-      console.log("True");
       ReactDOM.render(
         <div className="sidebarChart" id="loading">
           <img src={loading} alt="loading" />
