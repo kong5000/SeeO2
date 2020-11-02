@@ -1,12 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
-  RadialBarChart, RadialBar, Legend, Tooltip
+  RadialBarChart, RadialBar, Tooltip
 } from 'recharts';
-
-const style = {
-	top: 0,
-	left: 200,
-};
 
 export default class Example extends PureComponent {
   static jsfiddleUrl = 'https://jsfiddle.net/alidingling/30763kr7/';
