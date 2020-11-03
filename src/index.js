@@ -4,6 +4,7 @@ import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import AllAveragesChart from "./AllAveragesChart";
+import MonthChart from "./MonthChart";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
@@ -49,7 +50,7 @@ socket.on("connect", () => {
   });
 
   socket.on("receiveHistoricalData", (data) => {
-    const views = ['Hours', 'Days', 'Months'];
+    const views = ['Days ago', 'Weeks ago', 'Months ago'];
     
     //Render historical data where the sidebar is
     // const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
@@ -58,6 +59,10 @@ socket.on("connect", () => {
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
     const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", pm25Colour);
     const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", pm10Colour);
+
+    const [pm25MonthlyAverages, monthName] = getMonthlyAverages(data.data, data.offset, "pm25");
+    const [pm10MonthlyAverages  ] = getMonthlyAverages(data.data, data.offset, "pm10");
+
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
@@ -95,8 +100,10 @@ socket.on("connect", () => {
           </button>
           {data.dataView === 0 ?
             (<span>{data.offset * 24 + 24} - {data.offset * 24}</span>)
-              : 
-            (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)}
+            : data.dataView === 1 ?
+            (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)
+            :
+            (<span className="hoursAgo">{monthName.split(" ")[0]}</span>)}
           <button
             onClick={() => {
               if (data.offset > -0) {
@@ -116,8 +123,10 @@ socket.on("connect", () => {
         <div className="controlls-container">
           {data.dataView === 0 ?
             (<h3 className="hoursAgo">Hours Ago</h3>)
-            :
+            : data.dataView === 1 ?
             (<h3 className="hoursAgo">Days Ago</h3>)
+            :
+            (<h3 className="hoursAgo">{monthName.split(" ")[1]}</h3>)
           }
         </div>
         <div className="controlls-container">
@@ -133,7 +142,7 @@ socket.on("connect", () => {
             data={[{name: "Avg", pm25: pm25Avg, pm10: pm10Avg,},]}
             dataKey="average"
           /></div>)
-        :
+        : data.dataView === 1 ?
         (<div>
           <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
           <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/>
@@ -141,7 +150,12 @@ socket.on("connect", () => {
             data={[{name: "Avg", pm25: pm25AvgWeek, pm10: pm10AvgWeek,},]}
             dataKey="average"
           />
-          </div>)
+        </div>)
+        :
+        (<div>
+          <MonthChart name={"pm2.5"} data={pm25MonthlyAverages} fill="#884444"/>
+          <MonthChart name={"pm10"} data={pm10MonthlyAverages} fill="#888888"/>
+        </div>)
         }
       </div>,
       document.getElementById("side")
@@ -243,4 +257,76 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
   weeklyAverage /= 7;
 
   return [dailyAverage.reverse(), weeklyAverage];
+};
+
+//Get average data for months
+const getMonthlyAverages = (data, offset, dataKey) => {
+  let week = 1;
+  let currentMonth = "";
+  const monthNames = [];
+  const months = {};
+  const averages = {};
+
+  data.forEach((element) => {
+    const date = element.date.split(", ");
+    const day = date[2];
+
+      const month = date[1] + date[4];
+      if(currentMonth !== month){currentMonth = month; week = 1; monthNames.push(month)};
+      
+      //Create month if it doesn't exist
+      if(!months[month]){months[month] = {}};
+      if(!averages[month]){averages[month] = {}};
+
+      if(!months[month][day]){months[month][day] = {name: date[0] + day, average: 0}};
+      if(!averages[month][day]){averages[month][day] = 0}
+
+      if(element[dataKey] !== -99){
+        months[month][day].average += element[dataKey];
+        averages[month][day] += 1;
+      };
+    
+  });
+  const sortedMonths = []
+
+  for(let i = 1; i <= 31; i++){
+    if(months[monthNames[offset]][`0${i}`]){
+      sortedMonths.push({name:months[monthNames[offset]][`0${i}`].name, average: months[monthNames[offset]][`0${i}`].average/averages[monthNames[offset]][`0${i}`]})
+    } else if(months[monthNames[offset]][`${i}`]){
+      sortedMonths.push({name:months[monthNames[offset]][`${i}`].name, average: months[monthNames[offset]][`${i}`].average/averages[monthNames[offset]][`${i}`]})
+    } else {
+      sortedMonths.push({name:'Empty', average: null})
+    }
+  }
+
+  const monthData = {}
+
+  monthData[`week${week}`] = [];
+  let i = 0;
+
+  for(const day of sortedMonths){
+    if(i === 7){
+      week++;
+      monthData[`week${week}`] = [];
+      i = 0
+    }
+    if(day.average > -1){
+      monthData[`week${week}`].push(day);
+    }
+    
+    i++
+  }
+
+  const length = monthData['week5'].length;
+
+  if(monthData['week5'][length-1].name.includes("Saturday")){
+    for(let i = 0; i < 7 - length; i++){
+      monthData['week5'].unshift({name:'Empty', average: null})
+    }
+  } else {
+    for(let i = 0; i < 7 - length; i++){
+      monthData['week5'].push({name:'Empty', average: null})
+    }
+  }
+  return [monthData, monthNames[offset]]
 };
