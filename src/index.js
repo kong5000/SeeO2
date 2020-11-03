@@ -50,7 +50,7 @@ socket.on("connect", () => {
   });
 
   socket.on("receiveHistoricalData", (data) => {
-    const views = ['Hours', 'Days', 'Months'];
+    const views = ['Days ago', 'Weeks ago', 'Months ago'];
     
     //Render historical data where the sidebar is
     // const [c02Data, c02Avg] = getChartData(data.data, "co2", data.offset);
@@ -60,7 +60,8 @@ socket.on("connect", () => {
     const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", pm25Colour);
     const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", pm10Colour);
 
-    const pm25MonthlyAverages = getMonthlyAverages(data.data, data.offset, "pm25", "#884444");
+    const [pm25MonthlyAverages, monthName] = getMonthlyAverages(data.data, data.offset, "pm25");
+    const [pm10MonthlyAverages  ] = getMonthlyAverages(data.data, data.offset, "pm10");
 
     ReactDOM.render(
       <div className="sidebarChart">
@@ -99,8 +100,10 @@ socket.on("connect", () => {
           </button>
           {data.dataView === 0 ?
             (<span>{data.offset * 24 + 24} - {data.offset * 24}</span>)
-              : 
-            (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)}
+            : data.dataView === 1 ?
+            (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)
+            :
+            (<span className="hoursAgo">{monthName.split(" ")[0]}</span>)}
           <button
             onClick={() => {
               if (data.offset > -0) {
@@ -120,8 +123,10 @@ socket.on("connect", () => {
         <div className="controlls-container">
           {data.dataView === 0 ?
             (<h3 className="hoursAgo">Hours Ago</h3>)
-            :
+            : data.dataView === 1 ?
             (<h3 className="hoursAgo">Days Ago</h3>)
+            :
+            (<h3 className="hoursAgo">{monthName.split(" ")[1]}</h3>)
           }
         </div>
         <div className="controlls-container">
@@ -131,14 +136,13 @@ socket.on("connect", () => {
         <Chart data={tvocData} dataKey="tvoc" fill="#448844" /> */}
         {data.dataView === 0 ?
           (<div>
-          <MonthChart data={pm25MonthlyAverages}/>
           <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
           <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
           <AverageChart
             data={[{name: "Avg", pm25: pm25Avg, pm10: pm10Avg,},]}
             dataKey="average"
           /></div>)
-        :
+        : data.dataView === 1 ?
         (<div>
           <AllAveragesChart data={pm25WeeklyAverages} dataKey="pm25"/>
           <AllAveragesChart data={pm10WeeklyAverages} dataKey="pm10"/>
@@ -146,7 +150,12 @@ socket.on("connect", () => {
             data={[{name: "Avg", pm25: pm25AvgWeek, pm10: pm10AvgWeek,},]}
             dataKey="average"
           />
-          </div>)
+        </div>)
+        :
+        (<div>
+          <MonthChart name={"pm2.5"} data={pm25MonthlyAverages} fill="#884444"/>
+          <MonthChart name={"pm10"} data={pm10MonthlyAverages} fill="#888888"/>
+        </div>)
         }
       </div>,
       document.getElementById("side")
@@ -251,10 +260,8 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
 };
 
 //Get average data for months
-const getMonthlyAverages = (data, offset, dataKey, colour) => {
-  const dailyAverage = [];
+const getMonthlyAverages = (data, offset, dataKey) => {
   let week = 1;
-  let changeWeek = true
   let currentMonth = "";
   const monthNames = [];
   const months = {};
@@ -262,53 +269,64 @@ const getMonthlyAverages = (data, offset, dataKey, colour) => {
 
   data.forEach((element) => {
     const date = element.date.split(", ");
-    const day = date[0] + date[2];
+    const day = date[2];
 
-    if(element[dataKey] !== -99){
       const month = date[1] + date[4];
       if(currentMonth !== month){currentMonth = month; week = 1; monthNames.push(month)};
-
-      if(date[0] === "Saturday   " && changeWeek){
-        console.log("yes");
-        changeWeek = false
-        week++;
-      }
-      if(date[0] === "Friday   " && !changeWeek){changeWeek = true}
       
       //Create month if it doesn't exist
       if(!months[month]){months[month] = {}};
       if(!averages[month]){averages[month] = {}};
 
-      //The same for the weeks and days
-      if(!months[month][`week${week}`]){months[month][`week${week}`] = {}};
-      if(!averages[month][`week${week}`]){averages[month][`week${week}`] = {}};
+      if(!months[month][day]){months[month][day] = {name: date[0] + day, average: 0}};
+      if(!averages[month][day]){averages[month][day] = 0}
 
-      if(!months[month][`week${week}`][day]){months[month][`week${week}`][day] = 0};
-      if(!averages[month][`week${week}`][day]){averages[month][`week${week}`][day] = 0}
-
-      months[month][`week${week}`][day] += element[dataKey];
-
-      averages[month][`week${week}`][day] += 1;
-    }
+      if(element[dataKey] !== -99){
+        months[month][day].average += element[dataKey];
+        averages[month][day] += 1;
+      };
+    
   });
-  
-  const sortedMonths = {}
+  const sortedMonths = []
 
-  for(const week in months[monthNames[offset]]){
-
-    sortedMonths[week] = [];
-    for(const day in months[monthNames[offset]][week]){
-      sortedMonths[week].push({name: day, average: months[monthNames[offset]][week][day] / averages[monthNames[offset]][week][day]});
+  for(let i = 1; i <= 31; i++){
+    if(months[monthNames[offset]][`0${i}`]){
+      sortedMonths.push({name:months[monthNames[offset]][`0${i}`].name, average: months[monthNames[offset]][`0${i}`].average/averages[monthNames[offset]][`0${i}`]})
+    } else if(months[monthNames[offset]][`${i}`]){
+      sortedMonths.push({name:months[monthNames[offset]][`${i}`].name, average: months[monthNames[offset]][`${i}`].average/averages[monthNames[offset]][`${i}`]})
+    } else {
+      sortedMonths.push({name:'Empty', average: null})
     }
-
-    sortedMonths[week].reverse()
-    const weekLength =  sortedMonths[week].length
-
-    for(let i = 0; i < 7 - weekLength; i++){
-      sortedMonths[week].push({name:'Empty', average: null})
-    }
-
   }
 
-  return sortedMonths
+  const monthData = {}
+
+  monthData[`week${week}`] = [];
+  let i = 0;
+
+  for(const day of sortedMonths){
+    if(i === 7){
+      week++;
+      monthData[`week${week}`] = [];
+      i = 0
+    }
+    if(day.average > -1){
+      monthData[`week${week}`].push(day);
+    }
+    
+    i++
+  }
+
+  const length = monthData['week5'].length;
+
+  if(monthData['week5'][length-1].name.includes("Saturday")){
+    for(let i = 0; i < 7 - length; i++){
+      monthData['week5'].unshift({name:'Empty', average: null})
+    }
+  } else {
+    for(let i = 0; i < 7 - length; i++){
+      monthData['week5'].push({name:'Empty', average: null})
+    }
+  }
+  return [monthData, monthNames[offset]]
 };
