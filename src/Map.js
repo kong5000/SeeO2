@@ -109,6 +109,11 @@ export class CurrentLocation extends React.Component {
               lng: coords.longitude,
             },
           });
+        }, (error) => {
+          this.setState({
+            currentLocation: this.props.initialCenter
+          });
+          console.log(error.message)
         });
       }
     }
