@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "google-maps-react": "^2.0.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -18,8 +19,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "start": "node server/server.js",
     "proxy": "http://localhost:8002",
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
