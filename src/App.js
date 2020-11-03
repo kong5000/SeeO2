@@ -155,16 +155,14 @@ export class MapContainer extends Component {
               <p>
                 PM 2.5:{" "}
                 {this.state.selectedPlace.PM25 !== -99
-                  ? this.state.selectedPlace.PM25
-                  : "null"}{" "}
-                μg/m3
+                  ? this.state.selectedPlace.PM25 + " μg/m3"
+                  : "Sensor Offline"}
               </p>
               <span>
                 PM 10:{" "}
                 {this.state.selectedPlace.PM10 !== -99
-                  ? this.state.selectedPlace.PM10
-                  : "null"}{" "}
-                μg/m3
+                  ? this.state.selectedPlace.PM10 + " μg/m3"
+                  : "Sensor Offline"}
               </span>
               <ul className="aq-scale">
                 <li
