@@ -149,16 +149,16 @@ export class MapContainer extends Component {
             onClose={this.onClose}
           >
             <div className="info-display">
-              <h3>{this.state.selectedPlace.name}</h3>
+              <h2>{this.state.selectedPlace.name}</h2>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
               <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span> */}
-              <span>
+              <p>
                 PM 2.5:{" "}
                 {this.state.selectedPlace.PM25 !== -99
                   ? this.state.selectedPlace.PM25
                   : "null"}{" "}
                 μg/m3
-              </span>
+              </p>
               <span>
                 PM 10:{" "}
                 {this.state.selectedPlace.PM10 !== -99

@@ -49,6 +49,20 @@
   flex-direction: column;
 }
 
+.info-display p {
+  background-color: #163d5f;
+  color: white;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.info-display h2 {
+  background-color: whitesmoke;
+  padding: 10px;
+  border-radius: 3px;
+  border: 3px solid #163d5f;
+}
+
 .info-display input {
   width: 100%;
 }
