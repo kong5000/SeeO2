@@ -68,40 +68,43 @@ socket.on("connect", () => {
         {/*Arrow buttons to switch pages in the data view*/}
         <div className="view-controlls-container">
           {data.dataView !== 0 ?
-            (<button onClick={() => {nextPage({
+            (<button title="Show data from the last 24 hours"
+              onClick={() => {nextPage({
               data: data.data,
               offset: 0,
               timezone: data.timezone,
               timezoneOffset: data.timezoneOffset,
               dataView: 0
               });}}>
-                Days
+                Day
               </button>)
             :
             (<button id="chosen-view">Days</button>)
           }
           {data.dataView !== 1 ?
-            (<button onClick={() => {nextPage({
+            (<button title="Show average data from the last seven days"
+              onClick={() => {nextPage({
               data: data.data,
               offset: 0,
               timezone: data.timezone,
               timezoneOffset: data.timezoneOffset,
               dataView: 1
               });}}>
-                Weeks
+                Week
               </button>)
             :
             (<button id="chosen-view">Weeks</button>)
           }
           {data.dataView !== 2 ?
-            (<button onClick={() => {nextPage({
+            (<button title="Show average data from the last month"
+              onClick={() => {nextPage({
               data: data.data,
               offset: 0,
               timezone: data.timezone,
               timezoneOffset: data.timezoneOffset,
               dataView: 2
               });}}>
-                Months
+                Month
               </button>)
             :
             (<button id="chosen-view">Months</button>)
