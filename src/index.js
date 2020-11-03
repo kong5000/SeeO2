@@ -66,26 +66,46 @@ socket.on("connect", () => {
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
-        <div className="controlls-container">
-          <button onClick={() => {nextPage({
-                data: data.data,
-                offset: 0,
-                timezone: data.timezone,
-                timezoneOffset: data.timezoneOffset,
-                dataView: data.dataView > 0 ? data.dataView - 1 : data.dataView
+        <div className="view-controlls-container">
+          {data.dataView !== 0 ?
+            (<button onClick={() => {nextPage({
+              data: data.data,
+              offset: 0,
+              timezone: data.timezone,
+              timezoneOffset: data.timezoneOffset,
+              dataView: 0
               });}}>
-            {"<"}
-          </button>
-          <span>{views[data.dataView]}</span>
-          <button onClick={() => {nextPage({
-                data: data.data,
-                offset: 0,
-                timezone: data.timezone,
-                timezoneOffset: data.timezoneOffset,
-                dataView: data.dataView < 2 ? data.dataView + 1 : data.dataView
+                Days
+              </button>)
+            :
+            (<button id="chosen-view">Days</button>)
+          }
+          {data.dataView !== 1 ?
+            (<button onClick={() => {nextPage({
+              data: data.data,
+              offset: 0,
+              timezone: data.timezone,
+              timezoneOffset: data.timezoneOffset,
+              dataView: 1
               });}}>
-            {">"}
-          </button>
+                Weeks
+              </button>)
+            :
+            (<button id="chosen-view">Weeks</button>)
+          }
+          {data.dataView !== 2 ?
+            (<button onClick={() => {nextPage({
+              data: data.data,
+              offset: 0,
+              timezone: data.timezone,
+              timezoneOffset: data.timezoneOffset,
+              dataView: 2
+              });}}>
+                Months
+              </button>)
+            :
+            (<button id="chosen-view">Months</button>)
+          }
         </div>
         <div className="controlls-container">
           <button
@@ -120,6 +140,7 @@ socket.on("connect", () => {
             {">"}
           </button>
         </div> 
+        
         <div className="controlls-container">
           {data.dataView === 0 ?
             (<h3 className="hoursAgo">Hours Ago</h3>)
