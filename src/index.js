@@ -79,7 +79,7 @@ socket.on("connect", () => {
                 Day
               </button>)
             :
-            (<button id="chosen-view">Days</button>)
+            (<button id="chosen-view">Day</button>)
           }
           {data.dataView !== 1 ?
             (<button title="Show average data from the last seven days"
@@ -93,7 +93,7 @@ socket.on("connect", () => {
                 Week
               </button>)
             :
-            (<button id="chosen-view">Weeks</button>)
+            (<button id="chosen-view">Week</button>)
           }
           {data.dataView !== 2 ?
             (<button title="Show average data from the last month"
@@ -104,10 +104,10 @@ socket.on("connect", () => {
               timezoneOffset: data.timezoneOffset,
               dataView: 2
               });}}>
-                Month
+                Month 
               </button>)
             :
-            (<button id="chosen-view">Months</button>)
+            (<button id="chosen-view">Month</button>)
           }
         </div>
         <div className="controlls-container">
