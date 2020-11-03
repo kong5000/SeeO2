@@ -14,7 +14,7 @@
   max-width: 24vw;
   height: 100vh;
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   margin: 0;
@@ -25,6 +25,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
 }
 .controlls-container > button {
   color: #163d5f;
