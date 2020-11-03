@@ -33,7 +33,7 @@ let socket = null;
 require("dotenv").config();
 if (process.env.REACT_APP_USE_REMOTE_BACKEND === "true") {
   console.log("Using remote backend");
-  socket = ioClient("https://see-o2-backend.herokuapp.com");
+  socket = ioClient("https://seeo2-backup-backend.loca.lt");
 } else {
   socket = ioClient("http://localhost:8002");
 }
