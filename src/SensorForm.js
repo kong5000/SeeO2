@@ -1,14 +1,20 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom"
-import SideBar from "./SideBar"
+import ReactDOM from "react-dom";
+import SideBar from "./SideBar";
 import "./SideBar.css";
 import logo from "./images/SeeO2_logo.png";
 
 export class SensorForm extends Component {
   newSensor = (event) => {
     event.preventDefault();
-    if(this.state !== null){
-      if(this.state.name && this.state.email && this.state.url && this.state.latitude && this.state.longitude){
+    if (this.state !== null) {
+      if (
+        this.state.name &&
+        this.state.email &&
+        this.state.url &&
+        this.state.latitude &&
+        this.state.longitude
+      ) {
         this.props.socket.emit("newSensor", {
           email: this.state.email,
           name: this.state.name,
@@ -17,20 +23,20 @@ export class SensorForm extends Component {
           longitude: this.state.longitude,
         });
       } else {
-        alert("Please fill in all fields")
+        alert("Please fill in all fields");
       }
     } else {
-      alert("Please fill in all fields")
+      alert("Please fill in all fields");
     }
   };
-  
+
   render() {
     return (
       <div className="sidebar">
         <img src={logo} alt="SeeO2 logo" width="250vw" />
-         <h1>Register Your Sensor</h1>
-         <form id="sensorForm" onSubmit={this.newSensor}>
-           <input
+        <h1>Register Your Sensor</h1>
+        <form id="sensorForm" onSubmit={this.newSensor}>
+          <input
             type="email"
             name="email"
             value={this.email}
@@ -90,11 +96,13 @@ export class SensorForm extends Component {
 
           <button type="submit">Submit</button>
         </form>
-        <button onClick={()=>{
-          ReactDOM.render(
-            <SideBar />,
-            document.getElementById('side'));
-        }}>Back</button>
+        <button
+          onClick={() => {
+            ReactDOM.render(<SideBar />, document.getElementById("side"));
+          }}
+        >
+          Back
+        </button>
       </div>
     );
   }

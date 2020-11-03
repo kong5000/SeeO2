@@ -24,12 +24,16 @@ export class SideBar extends Component {
           purchase an air quality sensor and hook it into our network, widening
           and deepening our coverage.
         </p>
-        <button onClick={()=>{
-          ReactDOM.render(
-            <SensorForm socket={this.props.socket}/>
-            ,
-            document.getElementById('side'));
-        }}>Register Your Sensor</button>
+        <button
+          onClick={() => {
+            ReactDOM.render(
+              <SensorForm socket={this.props.socket} />,
+              document.getElementById("side")
+            );
+          }}
+        >
+          Register Your Sensor
+        </button>
       </div>
     );
   }
