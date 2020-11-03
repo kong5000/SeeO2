@@ -121,7 +121,7 @@ HomeMarker.propTypes = {
   map: PropTypes.object,
 };
 // eslint-disable-next-line
-evtNames.forEach((e) => (HomeMarker.propTypes[e] = PropTypes.func));
+// evtNames.forEach((e) => (HomeMarker.propTypes[e] = PropTypes.func));
 
 HomeMarker.defaultProps = {
   name: "HomeMarker",
