@@ -233,12 +233,12 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
     const date = element.date.split(", ");
 
     if(element[dataKey] !== -99){
-      days[date[0 + offset] + date[1 + offset]]
-        ? (days[date[0 + offset] + date[1 + offset]] += element[dataKey])
-        : (days[date[0 + offset] + date[1 + offset]] = element[dataKey]);
-      averages[date[0 + offset] + date[1 + offset]]
-        ? (averages[date[0 + offset] + date[1 + offset]] += 1)
-        : (averages[date[0 + offset] + date[1 + offset]] = 1);
+      days[date[1 + offset] + date[2 + offset]]
+        ? (days[date[1 + offset] + date[2 + offset]] += element[dataKey])
+        : (days[date[1 + offset] + date[2 + offset]] = element[dataKey]);
+      averages[date[1 + offset] + date[2 + offset]]
+        ? (averages[date[1 + offset] + date[2 + offset]] += 1)
+        : (averages[date[1 + offset] + date[2 + offset]] = 1);
     }
   });
   let i = 1;
