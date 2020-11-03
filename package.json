@@ -19,8 +19,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "node server/server.js",
     "proxy": "http://localhost:8002",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
