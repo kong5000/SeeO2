@@ -47,29 +47,24 @@ export class CurrentLocation extends React.Component {
             {
               featureType: "administrative",
               elementType: "labels",
-              stylers: [
-                { visibility: "off" }
-              ]
-            },{
+              stylers: [{ visibility: "off" }],
+            },
+            {
               featureType: "poi",
               elementType: "labels",
-              stylers: [
-                { visibility: "off" }
-              ]
-            },{
+              stylers: [{ visibility: "off" }],
+            },
+            {
               featureType: "water",
               elementType: "labels",
-              stylers: [
-                { visibility: "off" }
-              ]
-            },{
+              stylers: [{ visibility: "off" }],
+            },
+            {
               featureType: "road",
               elementType: "labels",
-              stylers: [
-                { visibility: "off" }
-              ]
+              stylers: [{ visibility: "off" }],
             },
-          ]
+          ],
         }
       );
 
@@ -101,15 +96,23 @@ export class CurrentLocation extends React.Component {
   componentDidMount() {
     if (this.props.centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          const coords = pos.coords;
-          this.setState({
-            currentLocation: {
-              lat: coords.latitude,
-              lng: coords.longitude,
-            },
-          });
-        });
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const coords = pos.coords;
+            this.setState({
+              currentLocation: {
+                lat: coords.latitude,
+                lng: coords.longitude,
+              },
+            });
+          },
+          (error) => {
+            this.setState({
+              currentLocation: this.props.initialCenter,
+            });
+            console.log(error.message);
+          }
+        );
       }
     }
     this.loadMap(); //<^>

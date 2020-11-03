@@ -7,11 +7,14 @@ import "./App.css";
 import Marker from "./Marker";
 import HomeMarker from "./HomeMarker";
 import InfoWindowX from "./infoWindowX";
-import poor from "./images/stop.png";
-import moderate from "./images/orange-blank.png";
-import good from "./images/ltblu-blank.png";
-import loading from "./images/load.gif";
 import axios from "axios";
+
+import unhealthySome from "./images/unhealthy_some.png";
+import unhealthyAll from "./images/unhealthy_all.png";
+import unhealthyVery from "./images/very_unhealthy.png";
+import moderate from "./images/moderate.png";
+import good from "./images/good.png";
+import loading from "./images/load.gif";
 
 export class MapContainer extends Component {
   state = {
@@ -54,7 +57,7 @@ export class MapContainer extends Component {
             offset: 0,
             timezoneOffset: res.data.rawOffset,
             timezone,
-            dataView: 0
+            dataView: 0,
           });
         });
 
@@ -123,7 +126,15 @@ export class MapContainer extends Component {
                 TVOC={sensor.tvoc}
                 id={sensor.id}
                 icon={
-                  sensor.pm25 > 35 ? poor : sensor.pm25 > 12 ? moderate : good
+                  sensor.pm25 > 150
+                    ? unhealthyVery
+                    : sensor.pm25 > 55
+                    ? unhealthyAll
+                    : sensor.pm25 > 35
+                    ? unhealthySome
+                    : sensor.pm25 > 12
+                    ? moderate
+                    : good
                 }
               />
             );
@@ -138,28 +149,87 @@ export class MapContainer extends Component {
             onClose={this.onClose}
           >
             <div className="info-display">
-              <h3>{this.state.selectedPlace.name}</h3>
+              <h2>{this.state.selectedPlace.name}</h2>
               {/* <span>CO2: {this.state.selectedPlace.CO2 !== -99 ? this.state.selectedPlace.CO2 : 'null'} ppm</span>
               <span>TVOC: {this.state.selectedPlace.TVOC !== -99 ? this.state.selectedPlace.TVOC : 'null'} mg/m3</span> */}
-              <span>
-                PM2.5:{" "}
+              <p>
+                PM 2.5:{" "}
                 {this.state.selectedPlace.PM25 !== -99
-                  ? this.state.selectedPlace.PM25
-                  : "null"}
-              </span>
+                  ? this.state.selectedPlace.PM25 + " μg/m3"
+                  : "Sensor Offline"}
+              </p>
               <span>
-                PM10:{" "}
+                PM 10:{" "}
                 {this.state.selectedPlace.PM10 !== -99
-                  ? this.state.selectedPlace.PM10
-                  : "null"}
+                  ? this.state.selectedPlace.PM10 + " μg/m3"
+                  : "Sensor Offline"}
               </span>
+              <ul className="aq-scale">
+                <li
+                  className={
+                    this.state.selectedPlace.PM25 < 13
+                      ? "good selected-AQ"
+                      : "good"
+                  }
+                >
+                  <span>good air quality</span>
+                  <span>PM2.5: 0-12</span>
+                </li>
+                <li
+                  className={
+                    this.state.selectedPlace.PM25 < 36 &&
+                    this.state.selectedPlace.PM25 > 12
+                      ? "moderate selected-AQ"
+                      : "moderate"
+                  }
+                >
+                  <span>moderate aq</span>
+                  <span>PM2.5: 13-35</span>
+                </li>
+                <li
+                  className={
+                    this.state.selectedPlace.PM25 < 56 &&
+                    this.state.selectedPlace.PM25 > 35
+                      ? "unhealthy-for-some selected-AQ"
+                      : "unhealthy-for-some"
+                  }
+                >
+                  <span>unhealthy for some</span>
+                  <span>PM2.5: 36-55</span>
+                </li>
+                <li
+                  className={
+                    this.state.selectedPlace.PM25 < 151 &&
+                    this.state.selectedPlace.PM25 > 55
+                      ? "unhealthy-for-all selected-AQ"
+                      : "unhealthy-for-all"
+                  }
+                >
+                  <span>unhealthy for all</span>
+                  <span>PM2.5: 56-150</span>
+                </li>
+                <li
+                  className={
+                    this.state.selectedPlace.PM25 > 150
+                      ? "very-unhealthy selected-AQ"
+                      : "very-unhealthy"
+                  }
+                >
+                  <span>very unhealthy</span>
+                  <span>PM2.5: 151+</span>
+                </li>
+              </ul>
               <p>
                 Local Air Quality is
-                {this.state.selectedPlace.PM25 > 35
-                  ? " unhealthy"
+                {this.state.selectedPlace.PM25 > 150
+                  ? " very unhealthy."
+                  : this.state.selectedPlace.PM25 > 55
+                  ? " unhealthy for all."
+                  : this.state.selectedPlace.PM25 > 35
+                  ? " unhealthy for some."
                   : this.state.selectedPlace.PM25 > 12
-                  ? " moderate"
-                  : " good"}
+                  ? " moderate."
+                  : " good."}
               </p>
               <div className="email-alert">
                 <input
@@ -168,7 +238,7 @@ export class MapContainer extends Component {
                   name="email"
                   value={this.email}
                   ref={this.emailInput}
-                  placeholder="Enter email for updates"
+                  placeholder="Enter email for updates!"
                 ></input>
                 <br />
                 <button
