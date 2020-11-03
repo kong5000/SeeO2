@@ -4,6 +4,7 @@ import "./index.css";
 import Chart from "./Chart";
 import AverageChart from "./AverageChart";
 import AllAveragesChart from "./AllAveragesChart";
+import MonthChart from "./MonthChart";
 import App from "./App";
 import ioClient from "socket.io-client";
 import loading from "./images/load.gif";
@@ -58,6 +59,9 @@ socket.on("connect", () => {
     const [pm10Data, pm10Avg] = getChartData(data.data, "pm10", data.offset);
     const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", pm25Colour);
     const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", pm10Colour);
+
+    const pm25MonthlyAverages = getMonthlyAverages(data.data, data.offset, "pm25", "#884444");
+
     ReactDOM.render(
       <div className="sidebarChart">
         {/*Arrow buttons to switch pages in the data view*/}
@@ -127,6 +131,7 @@ socket.on("connect", () => {
         <Chart data={tvocData} dataKey="tvoc" fill="#448844" /> */}
         {data.dataView === 0 ?
           (<div>
+          <MonthChart data={pm25MonthlyAverages}/>
           <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
           <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
           <AverageChart
@@ -236,11 +241,74 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
         average,
         fill: colour[i - 1],
       });
-      average != -99 ? weeklyAverage += average : weeklyAverage += 0
+      average !== -99 ? weeklyAverage += average : weeklyAverage += 0
       i++;
     }
   }
   weeklyAverage /= 7;
 
   return [dailyAverage, weeklyAverage];
+};
+
+//Get average data for months
+const getMonthlyAverages = (data, offset, dataKey, colour) => {
+  const dailyAverage = [];
+  let week = 1;
+  let changeWeek = true
+  let currentMonth = "";
+  const monthNames = [];
+  const months = {};
+  const averages = {};
+
+  data.forEach((element) => {
+    const date = element.date.split(", ");
+    const day = date[0] + date[2];
+
+    if(element[dataKey] !== -99){
+      const month = date[1] + date[4];
+      if(currentMonth !== month){currentMonth = month; week = 1; monthNames.push(month)};
+
+      if(date[0] === "Saturday   " && changeWeek){
+        console.log("yes");
+        changeWeek = false
+        week++;
+      }
+      if(date[0] === "Friday   " && !changeWeek){changeWeek = true}
+      
+      //Create month if it doesn't exist
+      if(!months[month]){months[month] = {}};
+      if(!averages[month]){averages[month] = {}};
+
+      //The same for the weeks and days
+      if(!months[month][`week${week}`]){months[month][`week${week}`] = {}};
+      if(!averages[month][`week${week}`]){averages[month][`week${week}`] = {}};
+
+      if(!months[month][`week${week}`][day]){months[month][`week${week}`][day] = 0};
+      if(!averages[month][`week${week}`][day]){averages[month][`week${week}`][day] = 0}
+
+      months[month][`week${week}`][day] += element[dataKey];
+
+      averages[month][`week${week}`][day] += 1;
+    }
+  });
+  
+  const sortedMonths = {}
+
+  for(const week in months[monthNames[offset]]){
+
+    sortedMonths[week] = [];
+    for(const day in months[monthNames[offset]][week]){
+      sortedMonths[week].push({name: day, average: months[monthNames[offset]][week][day] / averages[monthNames[offset]][week][day]});
+    }
+
+    sortedMonths[week].reverse()
+    const weekLength =  sortedMonths[week].length
+
+    for(let i = 0; i < 7 - weekLength; i++){
+      sortedMonths[week].push({name:'Empty', average: null})
+    }
+
+  }
+
+  return sortedMonths
 };
