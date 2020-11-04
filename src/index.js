@@ -273,7 +273,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
     }
   });
   let i = 1;
-  console.log(days)
+
   for (const day in days) {
     if(i < 8){
       i = 1;
@@ -284,11 +284,16 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
       average: average.toFixed(1),
       fill: colour[i - 1],
     });
-    average !== -99 ? weeklyAverage += average : weeklyAverage += 0;
     i++;
   }
-  weeklyAverage /= 7;
 
+  for(let i = 0 + offset; i < 6 + offset; i++){
+    if(dailyAverage[i]){
+      weeklyAverage += Number(dailyAverage[i].average);
+    }
+  }
+
+  weeklyAverage /= 7;
   return [dailyAverage.splice(0 + offset, 6 + offset).reverse(), weeklyAverage.toFixed(1)];
 };
 
