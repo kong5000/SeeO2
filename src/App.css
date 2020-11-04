@@ -79,13 +79,14 @@
 
 .aq-scale li {
   border: 1px solid #163d5f;
+  border-radius: 3px;
   padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 80px;
-  height: 35px;
-  transition-duration: 0.4s;
+  min-height: 35px;
+  transition-duration: 0.5s;
 }
 
 .aq-scale li:hover {
