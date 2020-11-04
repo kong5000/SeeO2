@@ -263,32 +263,33 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
 
   data.forEach((element) => {
     const date = element.date.split(", ");
-
     if(element[dataKey] !== -99){
-      days[date[1 + offset] + date[2 + offset]]
-        ? (days[date[1 + offset] + date[2 + offset]] += element[dataKey])
-        : (days[date[1 + offset] + date[2 + offset]] = element[dataKey]);
-      averages[date[1 + offset] + date[2 + offset]]
-        ? (averages[date[1 + offset] + date[2 + offset]] += 1)
-        : (averages[date[1 + offset] + date[2 + offset]] = 1);
+      days[date[1] + date[2]]
+        ? (days[date[1] + date[2]] += element[dataKey])
+        : (days[date[1] + date[2]] = element[dataKey]);
+      averages[date[1] + date[2]]
+        ? (averages[date[1] + date[2]] += 1)
+        : (averages[date[1] + date[2]] = 1);
     }
   });
   let i = 1;
+  console.log(days)
   for (const day in days) {
     if(i < 8){
-      const average = days[day] / averages[day];
-      dailyAverage.push({
-        date: day,
-        average: average.toFixed(1),
-        fill: colour[i - 1],
-      });
-      average !== -99 ? weeklyAverage += average : weeklyAverage += 0
-      i++;
+      i = 1;
     }
+    const average = days[day] / averages[day];
+    dailyAverage.push({
+      date: day,
+      average: average.toFixed(1),
+      fill: colour[i - 1],
+    });
+    average !== -99 ? weeklyAverage += average : weeklyAverage += 0;
+    i++;
   }
   weeklyAverage /= 7;
 
-  return [dailyAverage.reverse(), weeklyAverage.toFixed(1)];
+  return [dailyAverage.splice(0 + offset, 6 + offset).reverse(), weeklyAverage.toFixed(1)];
 };
 
 //Get average data for months
