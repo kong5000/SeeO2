@@ -60,8 +60,8 @@ socket.on("connect", () => {
     const [pm25WeeklyAverages, pm25AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm25", pm25Colour);
     const [pm10WeeklyAverages, pm10AvgWeek] = getWeeklyAverages(data.data, data.offset*7, "pm10", pm10Colour);
 
-    const [pm25MonthlyAverages, monthName] = getMonthlyAverages(data.data, data.offset, "pm25");
-    const [pm10MonthlyAverages  ] = getMonthlyAverages(data.data, data.offset, "pm10");
+    const [pm25MonthlyAverages, monthName, pm25AvgMonth] = getMonthlyAverages(data.data, data.offset, "pm25");
+    const [pm10MonthlyAverages, no, pm10AvgMonth] = getMonthlyAverages(data.data, data.offset, "pm10");
 
     ReactDOM.render(
       <div className="sidebarChart">
@@ -179,6 +179,10 @@ socket.on("connect", () => {
         (<div>
           <MonthChart name={"pm2.5"} data={pm25MonthlyAverages} fill="#884444"/>
           <MonthChart name={"pm10"} data={pm10MonthlyAverages} fill="#888888"/>
+          <AverageChart
+            data={[{name: "Avg", pm25: pm25AvgMonth, pm10: pm10AvgMonth,},]}
+            dataKey="average"
+          />
         </div>)
         }
       </div>,
@@ -290,6 +294,8 @@ const getMonthlyAverages = (data, offset, dataKey) => {
   const monthNames = [];
   const months = {};
   const averages = {};
+  let monthlyAverage = 0;
+  let days = 0;
 
   data.forEach((element) => {
     const date = element.date.split(", ");
@@ -317,8 +323,10 @@ const getMonthlyAverages = (data, offset, dataKey) => {
     if(months[monthNames[offset]]){
       if(months[monthNames[offset]][`0${i}`]){
         sortedMonths.push({name:months[monthNames[offset]][`0${i}`].name, average: months[monthNames[offset]][`0${i}`].average/averages[monthNames[offset]][`0${i}`]})
+        days++;
       } else if(months[monthNames[offset]][`${i}`]){
         sortedMonths.push({name:months[monthNames[offset]][`${i}`].name, average: months[monthNames[offset]][`${i}`].average/averages[monthNames[offset]][`${i}`]})
+        days++;
       } else {
         sortedMonths.push({name:'Empty', average: null})
       }
@@ -338,6 +346,7 @@ const getMonthlyAverages = (data, offset, dataKey) => {
     }
     if(day.average > -1){
       monthData[`week${week}`].push(day);
+      monthlyAverage += day.average
     }
     
     i++
@@ -356,5 +365,5 @@ const getMonthlyAverages = (data, offset, dataKey) => {
       }
     }
   }
-  return [monthData, monthNames[offset]]
+  return [monthData, monthNames[offset], (monthlyAverage/days)];
 };
