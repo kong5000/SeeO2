@@ -39,7 +39,7 @@
   transition-duration: 0.4s;
 }
 
-.controlls-container > button:hover, .view-controlls-container > button:hover, #chosen-view {
+.controlls-container > button:hover, .view-controlls-container > button:hover, #chosen-view, #disabled-button {
   color: lightblue;
   background-color: #163d5f;
   width: 70px;
@@ -59,7 +59,7 @@
 .view-controlls-container > button, .view-controlls-container > button:hover, #chosen-view {
   width: 30%
 }
-#chosen-view {
+#chosen-view, #disabled-button {
   cursor: unset;
 }
 #loading {

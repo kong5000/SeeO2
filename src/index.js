@@ -127,21 +127,25 @@ socket.on("connect", () => {
             (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)
             :
             (<span className="hoursAgo">{monthName ? monthName.split(" ")[0] : "No Data"}</span>)}
-          <button
-            onClick={() => {
-              if (data.offset > -0) {
-                nextPage({
-                  data: data.data,
-                  offset: data.offset - 1,
-                  timezone: data.timezone,
-                  timezoneOffset: data.timezoneOffset,
-                  dataView: data.dataView
-                });
-              }
-            }}
-          >
-            {">"}
-          </button>
+          {data.offset > -0 ?
+            (<button
+              onClick={() => {
+                
+                  nextPage({
+                    data: data.data,
+                    offset: data.offset - 1,
+                    timezone: data.timezone,
+                    timezoneOffset: data.timezoneOffset,
+                    dataView: data.dataView
+                  });
+                
+              }}
+            >
+              {">"}
+            </button>)
+            :
+            (<button id="disabled-button">{">"}</button>)
+          }
         </div> 
         
         <div className="controlls-container">
@@ -346,7 +350,7 @@ const getMonthlyAverages = (data, offset, dataKey) => {
     }
     if(day.average > -1){
       monthlyAverage += day.average;
-      
+
       if(day.average !== null){
         day.average = Math.round(day.average*10)/10;
       }
