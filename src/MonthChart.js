@@ -16,6 +16,7 @@ export default class MonthChart extends PureComponent {
   };
 
   render() {
+    console.log(this.props.data.week1)
     return (
       <div>
       <u>{this.props.name}</u>

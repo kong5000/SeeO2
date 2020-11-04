@@ -163,7 +163,7 @@ socket.on("connect", () => {
           <Chart data={pm25Data} dataKey="pm25" fill="#884444" />
           <Chart data={pm10Data} dataKey="pm10" fill="#888888" />
           <AverageChart
-            data={[{name: "Avg", pm25: pm25Avg, pm10: pm10Avg,},]}
+            data={[{name: "Avg", pm25: pm25Avg.toFixed(1), pm10: pm10Avg.toFixed(1),},]}
             dataKey="average"
           /></div>)
         : data.dataView === 1 ?
@@ -275,7 +275,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
       const average = days[day] / averages[day];
       dailyAverage.push({
         date: day,
-        average,
+        average: average.toFixed(1),
         fill: colour[i - 1],
       });
       average !== -99 ? weeklyAverage += average : weeklyAverage += 0
@@ -284,7 +284,7 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
   }
   weeklyAverage /= 7;
 
-  return [dailyAverage.reverse(), weeklyAverage];
+  return [dailyAverage.reverse(), weeklyAverage.toFixed(1)];
 };
 
 //Get average data for months
@@ -365,5 +365,5 @@ const getMonthlyAverages = (data, offset, dataKey) => {
       }
     }
   }
-  return [monthData, monthNames[offset], (monthlyAverage/days)];
+  return [monthData, monthNames[offset], (monthlyAverage/days).toFixed(1)];
 };
