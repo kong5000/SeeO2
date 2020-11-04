@@ -345,8 +345,12 @@ const getMonthlyAverages = (data, offset, dataKey) => {
       i = 0
     }
     if(day.average > -1){
+      monthlyAverage += day.average;
+      
+      if(day.average !== null){
+        day.average = Math.round(day.average*10)/10;
+      }
       monthData[`week${week}`].push(day);
-      monthlyAverage += day.average
     }
     
     i++
