@@ -127,21 +127,25 @@ socket.on("connect", () => {
             (<span>{data.offset * 7 + 7} - {data.offset * 7}</span>)
             :
             (<span className="hoursAgo">{monthName ? monthName.split(" ")[0] : "No Data"}</span>)}
-          <button
-            onClick={() => {
-              if (data.offset > -0) {
-                nextPage({
-                  data: data.data,
-                  offset: data.offset - 1,
-                  timezone: data.timezone,
-                  timezoneOffset: data.timezoneOffset,
-                  dataView: data.dataView
-                });
-              }
-            }}
-          >
-            {">"}
-          </button>
+          {data.offset > -0 ?
+            (<button
+              onClick={() => {
+                
+                  nextPage({
+                    data: data.data,
+                    offset: data.offset - 1,
+                    timezone: data.timezone,
+                    timezoneOffset: data.timezoneOffset,
+                    dataView: data.dataView
+                  });
+                
+              }}
+            >
+              {">"}
+            </button>)
+            :
+            (<button id="disabled-button">{">"}</button>)
+          }
         </div> 
         
         <div className="controlls-container">
@@ -259,32 +263,38 @@ const getWeeklyAverages = (data, offset, dataKey, colour) => {
 
   data.forEach((element) => {
     const date = element.date.split(", ");
-
     if(element[dataKey] !== -99){
-      days[date[1 + offset] + date[2 + offset]]
-        ? (days[date[1 + offset] + date[2 + offset]] += element[dataKey])
-        : (days[date[1 + offset] + date[2 + offset]] = element[dataKey]);
-      averages[date[1 + offset] + date[2 + offset]]
-        ? (averages[date[1 + offset] + date[2 + offset]] += 1)
-        : (averages[date[1 + offset] + date[2 + offset]] = 1);
+      days[date[1] + date[2]]
+        ? (days[date[1] + date[2]] += element[dataKey])
+        : (days[date[1] + date[2]] = element[dataKey]);
+      averages[date[1] + date[2]]
+        ? (averages[date[1] + date[2]] += 1)
+        : (averages[date[1] + date[2]] = 1);
     }
   });
   let i = 1;
+
   for (const day in days) {
     if(i < 8){
-      const average = days[day] / averages[day];
-      dailyAverage.push({
-        date: day,
-        average: average.toFixed(1),
-        fill: colour[i - 1],
-      });
-      average !== -99 ? weeklyAverage += average : weeklyAverage += 0
-      i++;
+      i = 1;
+    }
+    const average = days[day] / averages[day];
+    dailyAverage.push({
+      date: day,
+      average: average.toFixed(1),
+      fill: colour[i - 1],
+    });
+    i++;
+  }
+
+  for(let i = 0 + offset; i < 6 + offset; i++){
+    if(dailyAverage[i]){
+      weeklyAverage += Number(dailyAverage[i].average);
     }
   }
-  weeklyAverage /= 7;
 
-  return [dailyAverage.reverse(), weeklyAverage.toFixed(1)];
+  weeklyAverage /= 7;
+  return [dailyAverage.splice(0 + offset, 6 + offset).reverse(), weeklyAverage.toFixed(1)];
 };
 
 //Get average data for months
@@ -346,7 +356,7 @@ const getMonthlyAverages = (data, offset, dataKey) => {
     }
     if(day.average > -1){
       monthlyAverage += day.average;
-      
+
       if(day.average !== null){
         day.average = Math.round(day.average*10)/10;
       }

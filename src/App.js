@@ -77,7 +77,7 @@ export class MapContainer extends Component {
         showingInfoWindow: false,
         activeMarker: null,
       });
-      ReactDOM.render(<SideBar />, document.getElementById("side"));
+      ReactDOM.render(<SideBar socket={this.props.socket}/>, document.getElementById("side"));
     }
   };
 
