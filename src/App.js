@@ -100,7 +100,7 @@ export class MapContainer extends Component {
     return (
       <div className="main-container">
         <CurrentLocation centerAroundCurrentLocation google={this.props.google}>
-          <HomeMarker
+          {/* <HomeMarker
             onClick={this.onMarkerClick}
             name={"Your Current Location"}
           />
@@ -112,7 +112,7 @@ export class MapContainer extends Component {
             <div className="info-display">
               <h3>{this.state.selectedPlace.name}</h3>
             </div>
-          </InfoWindowX>
+          </InfoWindowX> */}
           {this.props.sensors.map((sensor) => {
             return (
               <Marker
